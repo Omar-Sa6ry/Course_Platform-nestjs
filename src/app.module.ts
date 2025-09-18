@@ -5,6 +5,7 @@ import { GraphqlModule } from './common/graphql/graphql.module';
 import { ConfigModule } from './common/config/config.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { TranslationModule } from './common/translation/translation.module';
+import { AppResolver } from './app.resolver';
 
 @Module({
   imports: [
@@ -14,6 +15,6 @@ import { TranslationModule } from './common/translation/translation.module';
     ThrottlerModule,
     TranslationModule,
   ],
-  providers: [AppService],
+  providers: [AppService, AppResolver],
 })
 export class AppModule {}

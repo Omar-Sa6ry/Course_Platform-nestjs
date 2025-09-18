@@ -2,6 +2,20 @@
 /dist
 /node_modules
 /build
+/issues.txt
+/api 
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+node_modules
+dist
+.git
+.gitignore
+npm-debug.log
+yarn-error.log
 
 # Logs
 logs
