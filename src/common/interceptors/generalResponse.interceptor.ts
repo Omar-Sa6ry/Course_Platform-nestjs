@@ -33,7 +33,7 @@ export class GeneralResponseInterceptor<T> implements NestInterceptor<T, any> {
           success: true,
           statusCode: data?.statusCode || 200,
           message: data?.message || 'Request successful',
-          timeStamp: new Date().toISOString().split('T')[0],
+          timeStamp: new Date().toISOString().split('T'),
           pagination: data?.pagination,
           url: data?.url,
           items,

@@ -21,7 +21,8 @@ export class RedisService implements IRedisInterface {
     try {
       const stringified =
         typeof value === 'string' ? value : JSON.stringify(value);
-      await this.cacheManager.set(key, stringified, ttl * 1000);
+
+      await this.cacheManager.set(key, stringified, ttl);
     } catch (error) {
       this.logger.error(`Error setting key ${key}`, error.stack);
       throw error;

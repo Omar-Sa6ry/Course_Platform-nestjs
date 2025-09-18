@@ -2,6 +2,130 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type User {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  firstName: String!
+  lastName: String!
+  fullName: String!
+  headline: String!
+  phone: String!
+  whatsapp: String!
+  nationalId: String!
+  email: String!
+  avatar: String
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type AuthOutPut {
+  user: User!
+  token: String!
+}
+
+type AuthResponse {
+  message: String
+  success: Boolean
+  timeStamp: String
+  statusCode: Float
+  data: AuthOutPut
+}
+
+type PaginationInfo {
+  totalPages: Int!
+  currentPage: Int!
+  totalItems: Int!
+}
+
+type UserResponse {
+  message: String
+  success: Boolean
+  timeStamp: String
+  statusCode: Float
+  data: User
+}
+
+type UsersResponse {
+  message: String
+  success: Boolean
+  timeStamp: String
+  statusCode: Float
+  items: [User!]
+  pagination: PaginationInfo
+}
+
 type Query {
   sayHello: String!
+  getUserById(id: UserIdInput!): UserResponse!
+  getUserByEmail(email: EmailInput!): UserResponse!
+  getUsers(page: Int, limit: Int): UsersResponse!
+  deleteUser(id: UserIdInput!): UserResponse!
+}
+
+input UserIdInput {
+  UserId: String!
+}
+
+input EmailInput {
+  email: String!
+}
+
+type Mutation {
+  register(createUserDto: CreateUserDto!): AuthResponse!
+  login(loginDto: LoginDto!): AuthResponse!
+  forgotPassword: AuthResponse!
+  resetPassword(resetPasswordDto: ResetPasswordDto!): UserResponse!
+  changePassword(changePasswordDto: ChangePasswordDto!): UserResponse!
+  updateUser(updateUserDto: UpdateUserDto!): UserResponse!
+  UpdateUserRoleToAdmin(id: UserIdInput!): UserResponse!
+}
+
+input CreateUserDto {
+  firstName: String!
+  lastName: String!
+  headline: String!
+  email: String!
+  password: String!
+  phone: String!
+  whatsapp: String!
+  nationalId: String!
+  fcmToken: String!
+  image: CreateImagDto
+}
+
+input CreateImagDto {
+  name: String
+  breed: String
+  image: Upload
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+input LoginDto {
+  email: String!
+  password: String!
+  fcmToken: String!
+}
+
+input ResetPasswordDto {
+  token: String!
+  password: String!
+}
+
+input ChangePasswordDto {
+  password: String!
+  newPassword: String!
+}
+
+input UpdateUserDto {
+  firstName: String
+  lastName: String
+  avatar: CreateImagDto
+  phone: String
+  whatsapp: String
 }

@@ -10,6 +10,6 @@ export class SendEmailCommand implements IEmailCommand {
   ) {}
 
   async execute(): Promise<void> {
-    await this.service.sendEmail(this.to, this.subject, this.text);
+    await this.service.queueEmail(this.to, this.subject, this.text);
   }
 }

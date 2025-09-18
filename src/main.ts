@@ -1,10 +1,11 @@
-import * as graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.js';
 // import * as bodyParser from 'body-parser';
+import * as graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.js';
 import { json } from 'express';
 import { DataSource } from 'typeorm';
 import { NestFactory, Reflector } from '@nestjs/core';
 import { I18nValidationException } from 'nestjs-i18n';
 import { AppModule } from './app.module';
+import { initializeTransactionalContext } from 'typeorm-transactional';
 import { GeneralResponseInterceptor } from './common/interceptors/generalResponse.interceptor';
 import { SqlInjectionInterceptor } from './common/interceptors/sqlInjection.interceptor';
 import {
@@ -15,6 +16,8 @@ import {
 
 async function bootstrap() {
   try {
+    initializeTransactionalContext();
+
     const app = await NestFactory.create(AppModule);
     app.enableCors();
     app.useGlobalPipes(new ValidationPipe());
