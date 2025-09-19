@@ -8,6 +8,7 @@ import { TranslationModule } from './common/translation/translation.module';
 import { AppResolver } from './app.resolver';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/users/users.module';
+import { CategoryModule } from './modules/category/category.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { UserModule } from './modules/users/users.module';
 
     AuthModule,
     UserModule,
+    CategoryModule,
   ],
   providers: [AppService, AppResolver],
 })

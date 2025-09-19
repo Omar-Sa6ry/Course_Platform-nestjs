@@ -2,6 +2,19 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Category {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  description: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type User {
   id: ID!
   createdAt: DateTime!
@@ -16,11 +29,6 @@ type User {
   email: String!
   avatar: String
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 type AuthOutPut {
   user: User!
@@ -58,12 +66,33 @@ type UsersResponse {
   pagination: PaginationInfo
 }
 
+type CategoryResponse {
+  message: String
+  success: Boolean
+  timeStamp: String
+  statusCode: Float
+  data: Category
+}
+
+type CategoriesResponse {
+  message: String
+  success: Boolean
+  timeStamp: String
+  statusCode: Float
+  items: [Category!]
+  pagination: PaginationInfo
+}
+
 type Query {
   sayHello: String!
   getUserById(id: UserIdInput!): UserResponse!
   getUserByEmail(email: EmailInput!): UserResponse!
   getUsers(page: Int, limit: Int): UsersResponse!
   deleteUser(id: UserIdInput!): UserResponse!
+  getAllCategories(page: Float, limit: Float): CategoriesResponse!
+  getAllCategoriesWithoutPagingation: CategoriesResponse!
+  getCategoryById(id: CategoryIdInput!): CategoryResponse!
+  getCategoryByName(name: CategoryNameInput!): CategoryResponse!
 }
 
 input UserIdInput {
@@ -74,6 +103,14 @@ input EmailInput {
   email: String!
 }
 
+input CategoryIdInput {
+  categoryId: String!
+}
+
+input CategoryNameInput {
+  name: String!
+}
+
 type Mutation {
   register(createUserDto: CreateUserDto!): AuthResponse!
   login(loginDto: LoginDto!): AuthResponse!
@@ -82,6 +119,9 @@ type Mutation {
   changePassword(changePasswordDto: ChangePasswordDto!): UserResponse!
   updateUser(updateUserDto: UpdateUserDto!): UserResponse!
   UpdateUserRoleToAdmin(id: UserIdInput!): UserResponse!
+  createCategory(createCategoryInput: CreateCategoryInput!): CategoryResponse!
+  updateCategory(id: CategoryIdInput!, updateCategoryInput: UpdateCategoryInput!): CategoryResponse!
+  deleteCategory(id: CategoryIdInput!): CategoryResponse!
 }
 
 input CreateUserDto {
@@ -128,4 +168,14 @@ input UpdateUserDto {
   avatar: CreateImagDto
   phone: String
   whatsapp: String
+}
+
+input CreateCategoryInput {
+  name: String!
+  description: String!
+}
+
+input UpdateCategoryInput {
+  name: String
+  description: String
 }

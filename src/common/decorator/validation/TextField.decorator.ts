@@ -1,12 +1,6 @@
 import { applyDecorators } from '@nestjs/common';
 import { Field } from '@nestjs/graphql';
-import {
-  IsAlphanumeric,
-  IsOptional,
-  IsString,
-  Length,
-  Matches,
-} from 'class-validator';
+import { IsOptional, IsString, Length, Matches } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { LowwerWords } from '../WordsTransform.decorator';
 
@@ -22,7 +16,9 @@ export function TextField(
     Field(() => String, { nullable }),
     IsOptional(),
     IsString({ message }),
-    IsAlphanumeric(),
+    Matches(/^[A-Za-z\s]+$/, {
+      message: `${text} must contain only letters (no numbers or symbols)`,
+    }),
     Length(min, max, {
       message,
     }),
