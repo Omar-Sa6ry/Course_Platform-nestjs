@@ -6,16 +6,13 @@ import { Transactional } from 'typeorm-transactional';
 import { CreateCategoryInput } from '../inputs/createCategoryr.input';
 import { UpdateCategoryInput } from '../inputs/updateColor.input';
 import { CategoryProxy } from '../proxy/category.proxy';
+import { UpdateCategoryStrategy } from '../strategy/category.stategy';
 import { Injectable } from '@nestjs/common';
 import { CategoryResponse } from '../dto/categoryResponse.dto';
 import {
   CategoryExistsHandler,
   CategoryNameHandler,
 } from '../chain/category.chain';
-import {
-  CreateCategoryStrategy,
-  UpdateCategoryStrategy,
-} from '../strategy/category.stategy';
 
 @Injectable()
 export class CategoryFascade {
@@ -23,7 +20,6 @@ export class CategoryFascade {
     private readonly i18n: I18nService,
     private readonly categoryProxy: CategoryProxy,
     private readonly updateStrategy: UpdateCategoryStrategy,
-    private readonly createStrategy: CreateCategoryStrategy,
     @InjectRepository(Category)
     private readonly categoryRepository: Repository<Category>,
   ) {}

@@ -2,7 +2,8 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { BaseEntity } from 'src/common/bases/BaseEntity';
 import { CapitalTextField } from 'src/common/decorator/validation/CapitalField.decorator';
 import { TextField } from 'src/common/decorator/validation/TextField.decorator';
-import { Column, Entity, Index } from 'typeorm';
+import { Course } from 'src/modules/courses/entity/course.entity';
+import { Column, Entity, Index, OneToMany } from 'typeorm';
 
 @ObjectType()
 @Entity('categories')
@@ -17,4 +18,8 @@ export class Category extends BaseEntity {
   @Column({ type: 'varchar', length: 200 })
   @TextField('Category Description', 200)
   description: string;
+
+  @Field(() => [Course], { nullable: true })
+  @OneToMany(() => Course, (course) => course.category)
+  courses?: Course[];
 }

@@ -4,6 +4,7 @@
   "UPDATED": "User updated successfully",
   "DELETED": "User deleted successfully",
   "NOT_ADMIN": "User not admin",
+  "NOT_INSTRACTOR":"User is not Instractor",
   "END_EMAIL": "User must be endend by @gmailcom",
   "NOT_FOUND": "User not found",
   "NOT_FOUNDS": "UserS not found",

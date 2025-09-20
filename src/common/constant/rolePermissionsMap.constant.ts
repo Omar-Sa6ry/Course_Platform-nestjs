@@ -17,6 +17,11 @@ export const rolePermissionsMap: Record<Role, Permission[]> = {
     Permission.UPDATE_CATEGORY,
     Permission.DELETE_CATEGORY,
 
+    // Course
+    Permission.CREATE_COURSE,
+    Permission.UPDATE_COURSE,
+    Permission.DELETE_COURSE,
+
     // Cart
     Permission.CREATE_CART,
     Permission.UPDATE_CART,
@@ -25,6 +30,21 @@ export const rolePermissionsMap: Record<Role, Permission[]> = {
   ],
 
   [Role.USER]: [
+    // User
+    Permission.UPDATE_USER,
+    Permission.RESET_PASSWORD,
+    Permission.CHANGE_PASSWORD,
+    Permission.FORGOT_PASSWORD,
+    Permission.LOGOUT,
+
+    // Cart
+    Permission.CREATE_CART,
+    Permission.UPDATE_CART,
+    Permission.DELETE_CART,
+    Permission.VIEW_CART,
+  ],
+
+  [Role.INSTRUCTOR]: [
     // User
     Permission.UPDATE_USER,
     Permission.RESET_PASSWORD,

@@ -1,5 +1,6 @@
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { GqlExecutionContext } from '@nestjs/graphql';
 import { GraphQLError } from 'graphql';
 import {
   Injectable,
@@ -7,7 +8,6 @@ import {
   ExecutionContext,
   CallHandler,
 } from '@nestjs/common';
-import { GqlExecutionContext } from '@nestjs/graphql';
 
 @Injectable()
 export class GeneralResponseInterceptor<T> implements NestInterceptor<T, any> {
@@ -21,7 +21,6 @@ export class GeneralResponseInterceptor<T> implements NestInterceptor<T, any> {
 
     return next.handle().pipe(
       map((data: any) => {
-        // Ensure safety before accessing arrays
         const isArray = Array.isArray(data);
         const items = Array.isArray(data?.items)
           ? data.items
@@ -39,9 +38,11 @@ export class GeneralResponseInterceptor<T> implements NestInterceptor<T, any> {
           items,
           data: isArray
             ? data
-            : typeof data?.data === 'object'
+            : typeof data?.data === 'number' || typeof data?.data === 'string'
               ? data.data
-              : {},
+              : typeof data?.data === 'object'
+                ? data.data
+                : (data?.data ?? null),
         };
       }),
 

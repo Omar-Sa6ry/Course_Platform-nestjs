@@ -6,6 +6,7 @@ import { CapitalTextField } from 'src/common/decorator/validation/CapitalField.d
 import { EmailField } from 'src/common/decorator/validation/EmailField.decorator';
 import { NationalIdField } from 'src/common/decorator/validation/nationalId.decorator';
 import { PhoneField } from 'src/common/decorator/validation/PhoneField.decorator';
+import { Course } from 'src/modules/courses/entity/course.entity';
 import {
   Entity,
   Column,
@@ -13,6 +14,7 @@ import {
   BeforeInsert,
   BeforeUpdate,
   Check,
+  OneToMany,
 } from 'typeorm';
 
 @ObjectType()
@@ -92,6 +94,10 @@ export class User extends BaseEntity {
   @Exclude()
   @Column({ nullable: true })
   fcmToken?: string;
+
+  @Field(() => [Course], { nullable: true })
+  @OneToMany(() => Course, (course) => course.instructor)
+  courses?: Course[];
 
   @BeforeInsert()
   @BeforeUpdate()

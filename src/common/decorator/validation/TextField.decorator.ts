@@ -16,8 +16,8 @@ export function TextField(
     Field(() => String, { nullable }),
     IsOptional(),
     IsString({ message }),
-    Matches(/^[A-Za-z\s]+$/, {
-      message: `${text} must contain only letters (no numbers or symbols)`,
+    Matches(/^[A-Za-z0-9\s.,-]+$/, {
+      message: `${text} must contain only letters, numbers or symbols)`,
     }),
     Length(min, max, {
       message,

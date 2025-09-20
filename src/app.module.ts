@@ -9,6 +9,7 @@ import { AppResolver } from './app.resolver';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/users/users.module';
 import { CategoryModule } from './modules/category/category.module';
+import { CourseModule } from './modules/courses/course.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { CategoryModule } from './modules/category/category.module';
     AuthModule,
     UserModule,
     CategoryModule,
+    CourseModule,
   ],
   providers: [AppService, AppResolver],
 })

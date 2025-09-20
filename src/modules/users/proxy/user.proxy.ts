@@ -4,9 +4,15 @@ import { I18nService } from 'nestjs-i18n';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from 'src/modules/users/entity/user.entity';
-import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Limit, Page } from 'src/common/constant/messages.constant';
+import { Role } from 'src/common/constant/enum.constant';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 
+@Injectable()
 export class UserProxy {
   constructor(
     private readonly i18n: I18nService,
@@ -115,5 +121,15 @@ export class UserProxy {
       throw new BadRequestException(
         await this.i18n.t('user.NATIONALID_EXISTED'),
       );
+  }
+
+  // For Anthor Serices
+  async checkIfInstractor(id: string): Promise<Boolean> {
+    const user = (await this.findById(id))?.data;
+
+    if (user.role !== Role.INSTRUCTOR)
+      throw new BadRequestException(await this.i18n.t('user.NOT_INSTRACTOR'));
+
+    return true;
   }
 }

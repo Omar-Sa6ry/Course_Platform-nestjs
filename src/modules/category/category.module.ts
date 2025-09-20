@@ -21,6 +21,6 @@ import {
     UpdateCategoryStrategy,
     CategoryResolver,
   ],
-  exports: [CategoryService, CategoryProxy, CategoryFascade],
+  exports: [CategoryService, CategoryProxy, TypeOrmModule],
 })
 export class CategoryModule {}

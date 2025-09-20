@@ -7,10 +7,17 @@ import { UploadService } from '../../common/upload/upload.service';
 import { EmailModule } from 'src/common/queues/email/email.module';
 import { UserFacadeService } from './fascade/user.fascade';
 import { User } from './entity/user.entity';
+import { UserProxy } from './proxy/user.proxy';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User]), EmailModule, RedisModule],
-  providers: [UserService, UserResolver, UserFacadeService, UploadService],
-  exports: [UserService, TypeOrmModule],
+  providers: [
+    UserService,
+    UserResolver,
+    UserProxy,
+    UserFacadeService,
+    UploadService,
+  ],
+  exports: [UserService, UserProxy, TypeOrmModule],
 })
 export class UserModule {}

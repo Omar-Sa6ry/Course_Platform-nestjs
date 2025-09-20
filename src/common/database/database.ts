@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Category } from 'src/modules/category/entity/category.entity';
+import { Course } from 'src/modules/courses/entity/course.entity';
 import { User } from 'src/modules/users/entity/user.entity';
 import { DataSource } from 'typeorm';
 import { addTransactionalDataSource } from 'typeorm-transactional';
@@ -19,7 +20,7 @@ import { addTransactionalDataSource } from 'typeorm-transactional';
         username: configService.get<string>('DB_USERNAME'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_NAME'),
-        entities: [User, Category],
+        entities: [User, Category, Course],
         logging: ['error', 'warn', 'query'], // Logs queries in development
         synchronize: true,
       }),

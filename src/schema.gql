@@ -2,19 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Category {
-  id: ID!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  name: String!
-  description: String!
-}
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
 type User {
   id: ID!
   createdAt: DateTime!
@@ -28,6 +15,55 @@ type User {
   nationalId: String!
   email: String!
   avatar: String
+  courses: [Course!]
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Course {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  title: String!
+  subtitle: String!
+  description: String!
+  learningOutcomes: String!
+  requirements: String!
+  targetAudience: String!
+  price: Float!
+  discountPrice: Float
+  level: CourseLevel!
+  imageUrl: String
+  promoVideoUrl: String
+  totalLectures: Int!
+  totalHours: Float!
+  ratingAvg: Float!
+  ratingCount: Int!
+  studentCount: Int!
+  isActive: Boolean
+  instructor: User!
+  category: Category!
+  finalPrice: Float!
+}
+
+"""Detailed CourseLevel in the system"""
+enum CourseLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+  ALL
+}
+
+type Category {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  description: String!
+  courses: [Course!]
 }
 
 type AuthOutPut {
@@ -83,6 +119,31 @@ type CategoriesResponse {
   pagination: PaginationInfo
 }
 
+type CourseResponse {
+  message: String
+  success: Boolean
+  timeStamp: String
+  statusCode: Float
+  data: Course
+}
+
+type CoursesResponse {
+  message: String
+  success: Boolean
+  timeStamp: String
+  statusCode: Float
+  items: [Course!]
+  pagination: PaginationInfo
+}
+
+type CourseCountResponse {
+  message: String
+  success: Boolean
+  timeStamp: String
+  statusCode: Float
+  data: Int
+}
+
 type Query {
   sayHello: String!
   getUserById(id: UserIdInput!): UserResponse!
@@ -93,6 +154,12 @@ type Query {
   getAllCategoriesWithoutPagingation: CategoriesResponse!
   getCategoryById(id: CategoryIdInput!): CategoryResponse!
   getCategoryByName(name: CategoryNameInput!): CategoryResponse!
+  findCourseById(id: CourseIdInput!): CourseResponse!
+  findCourseByTitle(title: CourseTitleInput!): CourseResponse!
+  findAllCourses(findCourseInput: FindCourseInput!, page: Float, limit: Float): CoursesResponse!
+  findAllCoursesWithoutPag(findCourseInput: FindCourseInput!): CoursesResponse!
+  countCourses: CourseCountResponse!
+  countAllCourses: CourseCountResponse!
 }
 
 input UserIdInput {
@@ -111,6 +178,48 @@ input CategoryNameInput {
   name: String!
 }
 
+input CourseIdInput {
+  courseId: String!
+}
+
+input CourseTitleInput {
+  title: String!
+}
+
+input FindCourseInput {
+  title: String
+  subtitle: String
+  description: String
+  targetAudience: String
+  requirements: String
+  learningOutcomes: String
+  level: CourseLevel
+  discountPrice: Float
+  price: Float
+  totalHours: Float
+  totalLectures: Float
+  image: CreateImagDto
+  demo_video: CreateVideoDto
+  isActive: Boolean
+  instructorId: String
+  categoryId: String
+}
+
+input CreateImagDto {
+  name: String
+  breed: String
+  image: Upload
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+input CreateVideoDto {
+  title: String
+  description: String
+  video: Upload!
+}
+
 type Mutation {
   register(createUserDto: CreateUserDto!): AuthResponse!
   login(loginDto: LoginDto!): AuthResponse!
@@ -122,6 +231,9 @@ type Mutation {
   createCategory(createCategoryInput: CreateCategoryInput!): CategoryResponse!
   updateCategory(id: CategoryIdInput!, updateCategoryInput: UpdateCategoryInput!): CategoryResponse!
   deleteCategory(id: CategoryIdInput!): CategoryResponse!
+  createCourse(createCourseInput: CreateCourseInput!): CourseResponse!
+  updateCourse(updateCourseInput: UpdateCourseInput!): CourseResponse!
+  deleteCourse(id: CourseIdInput!): CourseResponse!
 }
 
 input CreateUserDto {
@@ -136,15 +248,6 @@ input CreateUserDto {
   fcmToken: String!
   image: CreateImagDto
 }
-
-input CreateImagDto {
-  name: String
-  breed: String
-  image: Upload
-}
-
-"""The `Upload` scalar type represents a file upload."""
-scalar Upload
 
 input LoginDto {
   email: String!
@@ -178,4 +281,43 @@ input CreateCategoryInput {
 input UpdateCategoryInput {
   name: String
   description: String
+}
+
+input CreateCourseInput {
+  title: String!
+  subtitle: String!
+  description: String!
+  targetAudience: String!
+  requirements: String!
+  learningOutcomes: String!
+  level: CourseLevel!
+  discountPrice: Float
+  price: Float!
+  totalHours: Float!
+  totalLectures: Float!
+  image: CreateImagDto
+  demo_video: CreateVideoDto
+  isActive: Boolean
+  instructorId: String!
+  categoryId: String!
+}
+
+input UpdateCourseInput {
+  title: String
+  subtitle: String
+  description: String
+  targetAudience: String
+  requirements: String
+  learningOutcomes: String
+  level: CourseLevel
+  discountPrice: Float
+  price: Float
+  totalHours: Float
+  totalLectures: Float
+  image: CreateImagDto
+  demo_video: CreateVideoDto
+  isActive: Boolean
+  instructorId: String
+  categoryId: String
+  id: String!
 }

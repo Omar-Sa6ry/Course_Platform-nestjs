@@ -15,16 +15,15 @@ import { UserRoleContext } from '../state/user.state';
 
 @Injectable()
 export class UserFacadeService {
-  private proxy: UserProxy;
   private observers: CacheObserver;
 
   constructor(
     private readonly i18n: I18nService,
+    private readonly proxy: UserProxy,
     private readonly redisService: RedisService,
     private readonly uploadService: UploadService,
     @InjectRepository(User) private readonly userRepo: Repository<User>,
   ) {
-    this.proxy = new UserProxy(this.i18n, this.redisService, this.userRepo);
     this.observers = new CacheObserver(this.redisService);
   }
 

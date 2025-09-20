@@ -1,0 +1,9 @@
+{
+  "NOT_FOUND": "Course with ID {{id}} not found.",
+  "NOT_FOUND_BY_TITLE": "Course with title '{{title}}' not found.",
+  "NOT_FOUNDS": "No courses found.",
+  "EXISTED": "Course with title '{{title}}' already exists.",
+  "CREATED": "Course created successfully.",
+  "UPDATED": "Course '{{title}}' updated successfully.",
+  "DELETED": "Course with ID {{id}} deleted successfully."
+}

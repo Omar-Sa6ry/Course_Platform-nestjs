@@ -1,4 +1,4 @@
-import { Args, Context, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
 import { User } from '../users/entity/user.entity';
 import { AuthResponse } from './dto/AuthRes.dto';
@@ -10,14 +10,12 @@ import { CurrentUser } from 'src/common/decorator/currentUser.decorator';
 import { CurrentUserDto } from 'src/common/dtos/currentUser.dto';
 import { Permission } from 'src/common/constant/enum.constant';
 import { Auth } from 'src/common/decorator/auth.decorator';
-import { I18nService } from 'nestjs-i18n';
 import { UserResponse } from '../users/dto/UserResponse.dto';
 import { AuthServiceFacade } from './fascade/AuthService.facade';
 
 @Resolver(() => User)
 export class AuthResolver {
   constructor(
-    private readonly i18n: I18nService,
     private readonly authService: AuthService,
     private readonly authFacade: AuthServiceFacade,
   ) {}
