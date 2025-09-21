@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Request } from './entity/request.entity';
 import { RequestService } from './request.service';
@@ -13,13 +13,14 @@ import { CourseModule } from '../courses/course.module';
 import { CourseLoaderForUser } from './dataloaders/CourseLoaderForUser.dataloader';
 import { SendEmailService } from 'src/common/queues/email/sendemail.service';
 import { EmailModule } from 'src/common/queues/email/email.module';
+import { UserLoader } from './dataloaders/User.dataLoder';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Request, User, Course]),
     UserModule,
-    CourseModule,
     EmailModule,
+    forwardRef(() => CourseModule),
   ],
   providers: [
     RequestService,
@@ -28,7 +29,10 @@ import { EmailModule } from 'src/common/queues/email/email.module';
     RequestResolver,
     CourseLoaderForUser,
     RequestRelationsLoader,
+    UserLoader,
     SendEmailService,
   ],
+
+  exports: [RequestProxy, TypeOrmModule],
 })
 export class RequestModule {}

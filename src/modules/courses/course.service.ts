@@ -33,6 +33,10 @@ export class CourseService {
     return await this.courseFascade.update(updateCourseInput);
   }
 
+  async activate(id: string): Promise<CourseResponse> {
+    return await this.courseFascade.activate(id);
+  }
+  
   async delete(id: string): Promise<CourseResponse> {
     return await this.courseFascade.remove(id);
   }

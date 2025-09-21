@@ -11,13 +11,18 @@ import { RequestStatus } from 'src/common/constant/enum.constant';
 import { CourseLoaderForUser } from '../dataloaders/CourseLoaderForUser.dataloader';
 import { IRequestProxy } from '../interfaces/IRequestProxy.interface';
 import { CoursesResponse } from 'src/modules/courses/dto/courseResponse.dto';
-import { request } from 'https';
+import { UserEmailResponse } from 'src/modules/users/dto/UserResponse.dto';
+import { UserLoader } from '../dataloaders/User.dataLoder';
+import { RequestCommand } from '../command/request.command';
+import { SendEmailService } from 'src/common/queues/email/sendemail.service';
 
 @Injectable()
 export class RequestProxy implements IRequestProxy {
   constructor(
     private readonly i18n: I18nService,
     private readonly courseLoaderForUser: CourseLoaderForUser,
+    private readonly userLoader: UserLoader,
+    private readonly emailService: SendEmailService,
     @InjectRepository(Request)
     private readonly requestRepository: Repository<Request>,
   ) {}
@@ -49,7 +54,7 @@ export class RequestProxy implements IRequestProxy {
   async findAllWithPagination(
     findRequestInput: FindRequestInput,
   ): Promise<RequestsResponse> {
-    const [items, total] = await this.requestRepository.findAndCount({
+    const items = await this.requestRepository.find({
       where: { ...findRequestInput },
       order: { createdAt: 'DESC' },
     });
@@ -60,6 +65,35 @@ export class RequestProxy implements IRequestProxy {
     return {
       items,
     };
+  }
+
+  async findSendEmailForUsers(
+    title: string,
+    findRequestInput: FindRequestInput,
+  ): Promise<UserEmailResponse> {
+    const items = await this.requestRepository.find({
+      where: { ...findRequestInput },
+      order: { createdAt: 'DESC' },
+    });
+
+    if (items.length > 0) {
+      const userIds = items.map((req) => req.userId);
+      const users = await this.userLoader.batchUsers.loadMany(userIds);
+
+      const emails: string[] = (users as any[]).map((u) => u.email);
+
+      emails.map((em) => {
+        const emailCommand = new RequestCommand(
+          this.emailService,
+          em,
+          this.i18n.t('request.COURSE_IS_ACTIVE', { args: { title } }),
+          this.i18n.t('request.COURSE_IS_ACTIVE', { args: { title } }),
+        );
+        emailCommand.execute();
+      });
+
+      return { items: emails };
+    }
   }
 
   async findAll(

@@ -9,5 +9,6 @@
     "NO_PENDING":"No pending request found with the provided ID.",
     "NOT_YOUR_REQUEST":"This request does not belong to you.",
     "INACTIVE_COURSE":"Cannot send request to an inactive course.",
-    "CANNOT_DELETE_APPROVED":"Cannot delete an approved request."
+    "CANNOT_DELETE_APPROVED":"Cannot delete an approved request.",
+    "COURSE_IS_ACTIVE":"Course {title} is active."
 }

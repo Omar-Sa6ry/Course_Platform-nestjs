@@ -21,3 +21,9 @@ export class UsersResponse extends BaseResponse {
   @Field(() => PaginationInfo, { nullable: true })
   pagination?: PaginationInfo;
 }
+
+@ObjectType()
+export class UserEmailResponse extends BaseResponse {
+  @Field(() => [String])
+  items: string[];
+}

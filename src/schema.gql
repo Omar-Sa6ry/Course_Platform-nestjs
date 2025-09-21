@@ -283,6 +283,7 @@ type Mutation {
   deleteCategory(id: CategoryIdInput!): CategoryResponse!
   createCourse(createCourseInput: CreateCourseInput!): CourseResponse!
   updateCourse(updateCourseInput: UpdateCourseInput!): CourseResponse!
+  activationCourse(id: CourseIdInput!): CourseResponse!
   deleteCourse(id: CourseIdInput!): CourseResponse!
   createRequest(courseIdInput: CourseIdInput!): RequestResponse!
   acceptRequest(requestId: String!): RequestResponse!
@@ -371,7 +372,6 @@ input UpdateCourseInput {
   totalLectures: Float
   image: CreateImagDto
   demo_video: CreateVideoDto
-  isActive: Boolean
   instructorId: String
   categoryId: String
   id: String!

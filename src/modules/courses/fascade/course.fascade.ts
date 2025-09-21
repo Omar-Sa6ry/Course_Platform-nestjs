@@ -1,6 +1,6 @@
 import { RedisService } from './../../../common/redis/redis.service';
 import { UploadService } from 'src/common/upload/upload.service';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional';
@@ -14,6 +14,8 @@ import { UpdateCourseStrategy } from '../stratgies/updateCourse.stratgy';
 import { CreateCourseStrategy } from '../stratgies/createCourse.stratgy';
 import { UpdateCourseInput } from '../inputs/updateCourse.input';
 import { DeleteMediaHandler } from '../chain/deleteMedia.chain';
+import { RequestProxy } from 'src/modules/request/proxy/request.proxy';
+import { RequestStatus } from 'src/common/constant/enum.constant';
 
 @Injectable()
 export class CourseFascade {
@@ -21,6 +23,7 @@ export class CourseFascade {
     private readonly i18n: I18nService,
     private readonly redisService: RedisService,
     private readonly courseProxy: CourseProxy,
+    private readonly requestProxy: RequestProxy,
     private readonly createStrategy: CreateCourseStrategy,
     private readonly updateStrategy: UpdateCourseStrategy,
     private readonly uploadService: UploadService,
@@ -72,17 +75,43 @@ export class CourseFascade {
 
     const updatedCourse = await this.updateStrategy.execute(updateCourseInput);
 
-    if (updateCourseInput.isActive) {
-      const courses = await this.courseRepository.countBy({ isActive: true });
-      this.redisService.set(`course_count:all`, courses);
-    }
-    
     this.redisService.update(`course:${updatedCourse.id}`, updatedCourse);
 
     return {
       data: updatedCourse,
       message: await this.i18n.t('course.UPDATED', {
         args: { title: updatedCourse.title },
+      }),
+    };
+  }
+
+  @Transactional()
+  async activate(id: string): Promise<CourseResponse> {
+    const course = (await this.courseProxy.findById(id))?.data;
+
+    if (course?.isActive) {
+      throw new BadRequestException(
+        await this.i18n.t('course.ALREADY_ACTIVE', {
+          args: { title: course.title },
+        }),
+      );
+    }
+
+    course!.isActive = true;
+    await this.courseRepository.save(course!);
+
+    await this.requestProxy.findSendEmailForUsers(course.title, {
+      courseId: id,
+      status: RequestStatus.PENDING || RequestStatus.APPROVED,
+    });
+
+    const courses = await this.courseRepository.countBy({ isActive: true });
+    this.redisService.set(`course_count:all`, courses);
+
+    return {
+      data: course,
+      message: await this.i18n.t('course.COURSE_IS_ACTIVE', {
+        args: { title: course.title },
       }),
     };
   }

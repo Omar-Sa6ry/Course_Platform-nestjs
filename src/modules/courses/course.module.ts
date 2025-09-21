@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from '../users/users.module';
 import { Course } from './entity/course.entity';
@@ -12,6 +12,7 @@ import { RedisModule } from 'src/common/redis/redis.module';
 import { UpdateCourseStrategy } from './stratgies/updateCourse.stratgy';
 import { UploadModule } from 'src/common/upload/upload.module';
 import { CategoryModule } from '../category/category.module';
+import { RequestModule } from '../request/request.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { CategoryModule } from '../category/category.module';
     UploadModule,
     UserModule,
     CategoryModule,
+    forwardRef(() => RequestModule),
   ],
   providers: [
     CourseService,

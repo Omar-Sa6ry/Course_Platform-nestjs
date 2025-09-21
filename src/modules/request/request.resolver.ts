@@ -111,7 +111,7 @@ export class RequestResolver {
     return this.requestService.findCoursesByUserId(userId);
   }
 
-  @ResolveField(() => Course)
+  @ResolveField(() => User)
   async user(@Parent() request: Request): Promise<User> {
     return this.relationsLoader.batchUsers.load(request.userId);
   }
