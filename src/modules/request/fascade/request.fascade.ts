@@ -14,6 +14,7 @@ import { Transactional } from 'typeorm-transactional';
 import { IRequestFascade } from '../interfaces/IRequestFascade.interface';
 import { SendEmailService } from 'src/common/queues/email/sendemail.service';
 import { RequestCommand } from '../command/request.command';
+import { Course } from 'src/modules/courses/entity/course.entity';
 
 @Injectable()
 export class RequestFascade implements IRequestFascade {
@@ -23,6 +24,8 @@ export class RequestFascade implements IRequestFascade {
     private readonly userProxy: UserProxy,
     private readonly courseProxy: CourseProxy,
     private readonly requestProxy: RequestProxy,
+    @InjectRepository(Course)
+    private readonly courseRepository: Repository<Course>,
     @InjectRepository(Request)
     private readonly requestRepository: Repository<Request>,
   ) {}
@@ -64,7 +67,11 @@ export class RequestFascade implements IRequestFascade {
     if (request.course.isActive === false)
       throw new Error(this.i18n.t('course.INACTIVE_COURSE'));
 
+    const course = (await this.courseProxy.findById(request.courseId))?.data;
+
     request.status = RequestStatus.APPROVED;
+    course.studentCount += 1;
+    await this.courseRepository.save(course);
     await this.requestRepository.save(request);
 
     const userRequests = (
