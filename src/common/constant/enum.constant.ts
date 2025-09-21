@@ -28,7 +28,15 @@ export enum Permission {
   // Course
   CREATE_COURSE = 'create_course',
   UPDATE_COURSE = 'update_course',
+  VIEW_REQUEST_FOR_USER = 'view_request_for_user',
   DELETE_COURSE = 'delete_course',
+
+  // Requests
+  CREATE_REQUEST = 'create_request',
+  UPDATE_REQUEST = 'update_request',
+  DELETE_REQUEST = 'delete_request',
+  VIEW_REQUEST = 'view_request',
+  UPDATE_REQUESTFORUSER = 'update_requestforuser',
 
   // Cart
   CREATE_CART = 'create_cart',
@@ -43,6 +51,18 @@ export enum CourseLevel {
   ADVANCED = 'advanced',
   ALL = 'all',
 }
+
+export enum RequestStatus {
+  APPROVED = 'approved',
+  PENDING = 'pending',
+  REJECTED = 'rejected',
+  CANCELED = 'canceled',
+}
+
+registerEnumType(RequestStatus, {
+  name: 'RequestStatus',
+  description: 'Detailed status of requests in the system',
+});
 
 registerEnumType(Permission, {
   name: 'Permission',

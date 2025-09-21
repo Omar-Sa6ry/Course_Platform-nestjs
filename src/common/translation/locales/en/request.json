@@ -1,0 +1,13 @@
+{
+    "CREATED":"Request to course created successfully.",
+    "ALREADY_EXISTS":"You have already sent a request for this course.",
+    "NOT_FOUND":"Request not found.",
+    "ACCEPTED":"Request accepted successfully.",
+    "CANCELED":"Request canceled successfully.",
+    "REJECTED":"Request rejected successfully.",
+    "DELETED":"Request deleted successfully.",
+    "NO_PENDING":"No pending request found with the provided ID.",
+    "NOT_YOUR_REQUEST":"This request does not belong to you.",
+    "INACTIVE_COURSE":"Cannot send request to an inactive course.",
+    "CANNOT_DELETE_APPROVED":"Cannot delete an approved request."
+}

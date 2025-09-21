@@ -7,6 +7,7 @@ import { EmailField } from 'src/common/decorator/validation/EmailField.decorator
 import { NationalIdField } from 'src/common/decorator/validation/nationalId.decorator';
 import { PhoneField } from 'src/common/decorator/validation/PhoneField.decorator';
 import { Course } from 'src/modules/courses/entity/course.entity';
+import { Request } from 'src/modules/request/entity/request.entity';
 import {
   Entity,
   Column,
@@ -83,6 +84,10 @@ export class User extends BaseEntity {
   @Column({ length: 255, nullable: true })
   avatar?: string;
 
+  @Field(() => Boolean, { nullable: true })
+  @Column({ default: false })
+  isActive: boolean;
+
   @Exclude()
   @Column({ nullable: true })
   resetToken?: string;
@@ -98,6 +103,10 @@ export class User extends BaseEntity {
   @Field(() => [Course], { nullable: true })
   @OneToMany(() => Course, (course) => course.instructor)
   courses?: Course[];
+
+  @Field(() => [Request])
+  @OneToMany(() => Request, (request) => request.user, { onDelete: 'SET NULL' })
+  requests: Request[];
 
   @BeforeInsert()
   @BeforeUpdate()

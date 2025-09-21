@@ -1,9 +1,10 @@
 import { ObjectType, Field, Float, Int } from '@nestjs/graphql';
-import { Entity, Column, ManyToOne, Index } from 'typeorm';
+import { Entity, Column, ManyToOne, Index, OneToMany } from 'typeorm';
 import { BaseEntity } from 'src/common/bases/BaseEntity';
 import { User } from 'src/modules/users/entity/user.entity';
 import { Category } from 'src/modules/category/entity/category.entity';
 import { CourseLevel } from 'src/common/constant/enum.constant';
+import { Request } from 'src/modules/request/entity/request.entity';
 
 @ObjectType()
 @Entity('courses')
@@ -89,4 +90,8 @@ export class Course extends BaseEntity {
     onDelete: 'SET NULL',
   })
   category: Category;
+
+  @Field(() => [Request])
+  @OneToMany(() => Request, (request) => request.course, { onDelete: 'SET NULL' })
+  requests: Request[];
 }

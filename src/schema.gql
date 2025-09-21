@@ -2,6 +2,30 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Request {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  userId: String!
+  courseId: String!
+  status: RequestStatus!
+  user: User!
+  course: Course!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+"""Detailed status of requests in the system"""
+enum RequestStatus {
+  APPROVED
+  PENDING
+  REJECTED
+  CANCELED
+}
+
 type User {
   id: ID!
   createdAt: DateTime!
@@ -15,13 +39,10 @@ type User {
   nationalId: String!
   email: String!
   avatar: String
+  isActive: Boolean
   courses: [Course!]
+  requests: [Request!]!
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 type Course {
   id: ID!
@@ -46,6 +67,7 @@ type Course {
   isActive: Boolean
   instructor: User!
   category: Category!
+  requests: [Request!]!
   finalPrice: Float!
 }
 
@@ -144,6 +166,23 @@ type CourseCountResponse {
   data: Int
 }
 
+type RequestResponse {
+  message: String
+  success: Boolean
+  timeStamp: String
+  statusCode: Float
+  data: Request
+}
+
+type RequestsResponse {
+  message: String
+  success: Boolean
+  timeStamp: String
+  statusCode: Float
+  items: [Request!]
+  pagination: PaginationInfo
+}
+
 type Query {
   sayHello: String!
   getUserById(id: UserIdInput!): UserResponse!
@@ -160,6 +199,11 @@ type Query {
   findAllCoursesWithoutPag(findCourseInput: FindCourseInput!): CoursesResponse!
   countCourses: CourseCountResponse!
   countAllCourses: CourseCountResponse!
+  findRequestById(id: String!): RequestResponse!
+  findAllRequests(findRequestInput: FindRequestInput, page: Float, limit: Float): RequestsResponse!
+  findAllRequestsWithoutPag(findRequestInput: FindRequestInput): RequestsResponse!
+  findCoursesForUser: CoursesResponse!
+  findCoursesByUserId(userId: String!): CoursesResponse!
 }
 
 input UserIdInput {
@@ -220,6 +264,12 @@ input CreateVideoDto {
   video: Upload!
 }
 
+input FindRequestInput {
+  userId: String
+  courseId: String
+  status: RequestStatus
+}
+
 type Mutation {
   register(createUserDto: CreateUserDto!): AuthResponse!
   login(loginDto: LoginDto!): AuthResponse!
@@ -234,6 +284,11 @@ type Mutation {
   createCourse(createCourseInput: CreateCourseInput!): CourseResponse!
   updateCourse(updateCourseInput: UpdateCourseInput!): CourseResponse!
   deleteCourse(id: CourseIdInput!): CourseResponse!
+  createRequest(courseIdInput: CourseIdInput!): RequestResponse!
+  acceptRequest(requestId: String!): RequestResponse!
+  rejectRequest(requestId: String!): RequestResponse!
+  cancelRequest(requestId: String!): RequestResponse!
+  deleteRequest(requestId: String!): RequestResponse!
 }
 
 input CreateUserDto {

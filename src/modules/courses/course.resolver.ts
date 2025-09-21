@@ -12,6 +12,7 @@ import { CreateCourseInput } from './inputs/createCourse.input';
 import { CourseIdInput } from './inputs/courseId.input';
 import { Permission } from 'src/common/constant/enum.constant';
 import { UpdateCourseInput } from './inputs/updateCourse.input';
+import { FindCourseInput } from './inputs/findCourse.input';
 import { CourseTitleInput } from './inputs/courseTitle.input';
 import { User } from '../users/entity/user.entity';
 import { Auth } from 'src/common/decorator/auth.decorator';
@@ -22,7 +23,6 @@ import {
   CourseResponse,
   CoursesResponse,
 } from './dto/courseResponse.dto';
-import { FindCourseInput } from './inputs/findCourse.input';
 
 @Resolver(() => Course)
 export class CourseResolver {

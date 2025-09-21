@@ -102,21 +102,23 @@ export class UserProxy {
     if (cachedUser)
       throw new BadRequestException(await this.i18n.t('user.EMAIL_EXISTED'));
 
-    const emailExised = await this.userRepo.findOne({ where: { email } });
+    const [emailExised, phoneExised, whatsappExised, nationalIdExised] =
+      await Promise.all([
+        this.userRepo.findOne({ where: { email } }),
+        this.userRepo.findOne({ where: { phone } }),
+        this.userRepo.findOne({ where: { whatsapp } }),
+        this.userRepo.findOne({ where: { nationalId } }),
+      ]);
+
     if (emailExised)
       throw new BadRequestException(await this.i18n.t('user.EMAIL_EXISTED'));
 
-    const phoneExised = await this.userRepo.findOne({ where: { phone } });
     if (phoneExised)
       throw new BadRequestException(await this.i18n.t('user.PHONE_EXISTED'));
 
-    const whatsappExised = await this.userRepo.findOne({ where: { whatsapp } });
     if (whatsappExised)
       throw new BadRequestException(await this.i18n.t('user.WHTSAPP_EXISTED'));
 
-    const nationalIdExised = await this.userRepo.findOne({
-      where: { nationalId },
-    });
     if (nationalIdExised)
       throw new BadRequestException(
         await this.i18n.t('user.NATIONALID_EXISTED'),
@@ -131,5 +133,10 @@ export class UserProxy {
       throw new BadRequestException(await this.i18n.t('user.NOT_INSTRACTOR'));
 
     return true;
+  }
+
+  async makeUserActive(id: string): Promise<void> {
+    (await this.findById(id))?.data;
+    await this.userRepo.update({ id }, { isActive: true });
   }
 }

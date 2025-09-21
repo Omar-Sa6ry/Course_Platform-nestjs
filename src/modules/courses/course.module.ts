@@ -30,6 +30,6 @@ import { CategoryModule } from '../category/category.module';
     CreateCourseStrategy,
     UpdateCourseStrategy,
   ],
-  exports: [CourseService, TypeOrmModule],
+  exports: [CourseService, CourseProxy, TypeOrmModule],
 })
 export class CourseModule {}

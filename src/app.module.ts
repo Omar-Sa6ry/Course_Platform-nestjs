@@ -10,6 +10,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/users/users.module';
 import { CategoryModule } from './modules/category/category.module';
 import { CourseModule } from './modules/courses/course.module';
+import { RequestModule } from './modules/request/request.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { CourseModule } from './modules/courses/course.module';
     UserModule,
     CategoryModule,
     CourseModule,
+    RequestModule,
   ],
   providers: [AppService, AppResolver],
 })
