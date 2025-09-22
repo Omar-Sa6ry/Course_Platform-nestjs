@@ -14,6 +14,7 @@ import { RequestStatus } from 'src/common/constant/enum.constant';
 import { SendCertificateEmailCommand } from '../command/certificate.command';
 import { UserProxy } from 'src/modules/users/proxy/user.proxy';
 import { SendEmailService } from 'src/common/queues/email/sendemail.service';
+import { RequestFascade } from 'src/modules/request/fascade/request.fascade';
 
 @Injectable()
 export class CertificateFascade {
@@ -24,6 +25,7 @@ export class CertificateFascade {
     private readonly userProxy: UserProxy,
     private readonly courseProxy: CourseProxy,
     private readonly certificateProxy: CertificateProxy,
+    private readonly requestFascade: RequestFascade,
     @InjectRepository(Certificate)
     private readonly certificateRepository: Repository<Certificate>,
     @InjectRepository(Request)
@@ -60,6 +62,7 @@ export class CertificateFascade {
     });
     await this.certificateRepository.save(certificate);
 
+    this.requestFascade.delete(request.id);
     this.redisService.set(`certificate:${certificate.id}`, certificate);
 
     const emailCommand = new SendCertificateEmailCommand(

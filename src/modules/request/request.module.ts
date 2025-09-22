@@ -35,6 +35,6 @@ import { EmailQueueService } from './queue/email-queue.service';
     SendEmailService,
   ],
 
-  exports: [RequestProxy, TypeOrmModule],
+  exports: [RequestProxy, RequestFascade, TypeOrmModule],
 })
 export class RequestModule {}

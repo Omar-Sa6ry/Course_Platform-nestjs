@@ -13,12 +13,14 @@ import { UserModule } from '../users/users.module';
 import { EmailModule } from 'src/common/queues/email/email.module';
 import { SendEmailService } from 'src/common/queues/email/sendemail.service';
 import { CourseProxy } from '../courses/proxy/course.proxy';
+import { RequestModule } from '../request/request.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Certificate, Course, User]),
-    RedisModule,
+    RequestModule,
     UserModule,
+    RedisModule,
     EmailModule,
   ],
   providers: [
