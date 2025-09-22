@@ -38,6 +38,12 @@ export enum Permission {
   VIEW_REQUEST = 'view_request',
   UPDATE_REQUESTFORUSER = 'update_requestforuser',
 
+  // Certificate
+  CREATE_CERTIFICATE = 'create_certificate',
+  VIEW_CERTIFICATE = 'view_certificate',
+  VIEW_CERTIFICATE_FOR_USER = 'view_certificate_for_user',
+  DELETE_CERTIFICATE = 'delete_certificate',
+
   // Cart
   CREATE_CART = 'create_cart',
   UPDATE_CART = 'update_cart',

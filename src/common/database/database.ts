@@ -7,6 +7,7 @@ import { Request } from 'src/modules/request/entity/request.entity';
 import { User } from 'src/modules/users/entity/user.entity';
 import { addTransactionalDataSource } from 'typeorm-transactional';
 import { DataSource } from 'typeorm';
+import { Certificate } from 'src/modules/certificate/entity/certificate.entity';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { DataSource } from 'typeorm';
         username: configService.get<string>('DB_USERNAME'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_NAME'),
-        entities: [User, Category, Course, Request],
+        entities: [User, Category, Course, Request, Certificate],
         logging: ['error', 'warn', 'query'], // Logs queries in development
         synchronize: true,
       }),

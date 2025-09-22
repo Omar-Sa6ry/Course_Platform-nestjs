@@ -5,6 +5,7 @@ import { User } from 'src/modules/users/entity/user.entity';
 import { Category } from 'src/modules/category/entity/category.entity';
 import { CourseLevel } from 'src/common/constant/enum.constant';
 import { Request } from 'src/modules/request/entity/request.entity';
+import { Certificate } from 'src/modules/certificate/entity/certificate.entity';
 
 @ObjectType()
 @Entity('courses')
@@ -91,7 +92,15 @@ export class Course extends BaseEntity {
   })
   category: Category;
 
+  @Field(() => [Certificate])
+  @OneToMany(() => Certificate, (certificate) => certificate.course, {
+    onDelete: 'SET NULL',
+  })
+  certificates: Certificate[];
+
   @Field(() => [Request])
-  @OneToMany(() => Request, (request) => request.course, { onDelete: 'SET NULL' })
+  @OneToMany(() => Request, (request) => request.course, {
+    onDelete: 'SET NULL',
+  })
   requests: Request[];
 }

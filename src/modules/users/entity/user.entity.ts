@@ -6,6 +6,7 @@ import { CapitalTextField } from 'src/common/decorator/validation/CapitalField.d
 import { EmailField } from 'src/common/decorator/validation/EmailField.decorator';
 import { NationalIdField } from 'src/common/decorator/validation/nationalId.decorator';
 import { PhoneField } from 'src/common/decorator/validation/PhoneField.decorator';
+import { Certificate } from 'src/modules/certificate/entity/certificate.entity';
 import { Course } from 'src/modules/courses/entity/course.entity';
 import { Request } from 'src/modules/request/entity/request.entity';
 import {
@@ -107,6 +108,12 @@ export class User extends BaseEntity {
   @Field(() => [Request])
   @OneToMany(() => Request, (request) => request.user, { onDelete: 'SET NULL' })
   requests: Request[];
+
+  @Field(() => [Certificate])
+  @OneToMany(() => Certificate, (certificate) => certificate.user, {
+    onDelete: 'SET NULL',
+  })
+  certificates: Certificate[];
 
   @BeforeInsert()
   @BeforeUpdate()

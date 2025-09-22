@@ -11,6 +11,7 @@ import { UserModule } from './modules/users/users.module';
 import { CategoryModule } from './modules/category/category.module';
 import { CourseModule } from './modules/courses/course.module';
 import { RequestModule } from './modules/request/request.module';
+import { CertificateModule } from './modules/certificate/certificate.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { RequestModule } from './modules/request/request.module';
     CategoryModule,
     CourseModule,
     RequestModule,
+    CertificateModule,
   ],
   providers: [AppService, AppResolver],
 })

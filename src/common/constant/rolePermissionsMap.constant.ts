@@ -30,6 +30,12 @@ export const rolePermissionsMap: Record<Role, Permission[]> = {
     Permission.UPDATE_COURSE,
     Permission.DELETE_COURSE,
 
+    // Certificate
+    Permission.CREATE_CERTIFICATE,
+    Permission.VIEW_CERTIFICATE,
+    Permission.VIEW_CERTIFICATE_FOR_USER,
+    Permission.DELETE_CERTIFICATE,
+
     // Cart
     Permission.CREATE_CART,
     Permission.UPDATE_CART,
@@ -50,6 +56,9 @@ export const rolePermissionsMap: Record<Role, Permission[]> = {
     Permission.CREATE_REQUEST,
     Permission.VIEW_REQUEST_FOR_USER,
 
+    // Certificate
+    Permission.VIEW_CERTIFICATE_FOR_USER,
+
     // Cart
     Permission.CREATE_CART,
     Permission.UPDATE_CART,
@@ -64,6 +73,9 @@ export const rolePermissionsMap: Record<Role, Permission[]> = {
     Permission.CHANGE_PASSWORD,
     Permission.FORGOT_PASSWORD,
     Permission.LOGOUT,
+
+    // Certificate
+    Permission.VIEW_CERTIFICATE_FOR_USER,
 
     // Cart
     Permission.CREATE_CART,

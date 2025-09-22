@@ -2,6 +2,21 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Certificate {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  userId: String!
+  courseId: String!
+  user: User!
+  course: Course!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type Request {
   id: ID!
   createdAt: DateTime!
@@ -12,11 +27,6 @@ type Request {
   user: User!
   course: Course!
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 """Detailed status of requests in the system"""
 enum RequestStatus {
@@ -42,6 +52,7 @@ type User {
   isActive: Boolean
   courses: [Course!]
   requests: [Request!]!
+  certificates: [Certificate!]!
 }
 
 type Course {
@@ -67,6 +78,7 @@ type Course {
   isActive: Boolean
   instructor: User!
   category: Category!
+  certificates: [Certificate!]!
   requests: [Request!]!
   finalPrice: Float!
 }
@@ -183,6 +195,23 @@ type RequestsResponse {
   pagination: PaginationInfo
 }
 
+type CertificateResponse {
+  message: String
+  success: Boolean
+  timeStamp: String
+  statusCode: Float
+  data: Certificate
+}
+
+type CertificatesResponse {
+  message: String
+  success: Boolean
+  timeStamp: String
+  statusCode: Float
+  items: [Certificate!]
+  pagination: PaginationInfo
+}
+
 type Query {
   sayHello: String!
   getUserById(id: UserIdInput!): UserResponse!
@@ -205,6 +234,9 @@ type Query {
   findAllRequestsWithoutPag(findRequestInput: FindRequestInput): RequestsResponse!
   findCoursesForUser: CoursesResponse!
   findCoursesByUserId(userId: String!): CoursesResponse!
+  getCertificateById(id: CertificateIdInput!): CertificateResponse!
+  getCertificateByIdForUser: CertificatesResponse!
+  getCertificates(findCertificateInput: FindCertificateInput, page: Int, limit: Int): CertificatesResponse!
 }
 
 input UserIdInput {
@@ -271,6 +303,15 @@ input FindRequestInput {
   status: RequestStatus
 }
 
+input CertificateIdInput {
+  certificateId: String!
+}
+
+input FindCertificateInput {
+  courseId: String
+  userId: String
+}
+
 type Mutation {
   register(createUserDto: CreateUserDto!): AuthResponse!
   login(loginDto: LoginDto!): AuthResponse!
@@ -292,6 +333,8 @@ type Mutation {
   rejectRequest(requestId: String!): RequestResponse!
   cancelRequest(requestId: String!): RequestResponse!
   deleteRequest(requestId: String!): RequestResponse!
+  createCertificate(createCertificateInput: CreateCertificateInput!): CertificateResponse!
+  deleteCertificate(id: CertificateIdInput!): CertificateResponse!
 }
 
 input CreateUserDto {
@@ -377,4 +420,9 @@ input UpdateCourseInput {
   instructorId: String
   categoryId: String
   id: String!
+}
+
+input CreateCertificateInput {
+  courseId: String!
+  userId: String!
 }
