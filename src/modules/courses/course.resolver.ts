@@ -55,6 +55,14 @@ export class CourseResolver {
     return this.courseService.activate(id.courseId);
   }
 
+  @Auth([Permission.UPDATE_COURSE])
+  @Mutation(() => CourseResponse)
+  async deActivationCourse(
+    @Args('id') id: CourseIdInput,
+  ): Promise<CourseResponse> {
+    return this.courseService.deactivate(id.courseId);
+  }
+
   @Auth([Permission.DELETE_COURSE])
   @Mutation(() => CourseResponse)
   async deleteCourse(@Args('id') id: CourseIdInput): Promise<CourseResponse> {

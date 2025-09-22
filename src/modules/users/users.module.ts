@@ -8,9 +8,14 @@ import { EmailModule } from 'src/common/queues/email/email.module';
 import { UserFacadeService } from './fascade/user.fascade';
 import { User } from './entity/user.entity';
 import { UserProxy } from './proxy/user.proxy';
+import { Request } from '../request/entity/request.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User]), EmailModule, RedisModule],
+  imports: [
+    TypeOrmModule.forFeature([User, Request]),
+    EmailModule,
+    RedisModule,
+  ],
   providers: [
     UserService,
     UserResolver,
@@ -18,6 +23,6 @@ import { UserProxy } from './proxy/user.proxy';
     UserFacadeService,
     UploadService,
   ],
-  exports: [UserService, UserProxy, TypeOrmModule],
+  exports: [UserService, UserFacadeService, UserProxy, TypeOrmModule],
 })
 export class UserModule {}

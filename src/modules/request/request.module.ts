@@ -14,6 +14,7 @@ import { CourseLoaderForUser } from './dataloaders/CourseLoaderForUser.dataloade
 import { SendEmailService } from 'src/common/queues/email/sendemail.service';
 import { EmailModule } from 'src/common/queues/email/email.module';
 import { UserLoader } from './dataloaders/User.dataLoder';
+import { EmailQueueService } from './queue/email-queue.service';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { UserLoader } from './dataloaders/User.dataLoder';
     RequestProxy,
     RequestResolver,
     CourseLoaderForUser,
+    EmailQueueService,
     RequestRelationsLoader,
     UserLoader,
     SendEmailService,

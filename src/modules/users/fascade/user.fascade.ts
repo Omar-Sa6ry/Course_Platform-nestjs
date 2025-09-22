@@ -12,6 +12,8 @@ import { UserFactory } from '../factory/user.factory';
 import { CacheObserver } from '../observer/user.observer';
 import { RedisService } from 'src/common/redis/redis.service';
 import { UserRoleContext } from '../state/user.state';
+import { RequestStatus } from 'src/common/constant/enum.constant';
+import { Request } from 'src/modules/request/entity/request.entity';
 
 @Injectable()
 export class UserFacadeService {
@@ -23,6 +25,8 @@ export class UserFacadeService {
     private readonly redisService: RedisService,
     private readonly uploadService: UploadService,
     @InjectRepository(User) private readonly userRepo: Repository<User>,
+    @InjectRepository(Request)
+    private readonly requestRepo: Repository<Request>,
   ) {
     this.observers = new CacheObserver(this.redisService);
   }
@@ -58,6 +62,37 @@ export class UserFacadeService {
     await this.notifyUpdate(user);
 
     return { data: user };
+  }
+
+  @Transactional()
+  async activeUser(id: string): Promise<UserResponse> {
+    const user = (await this.proxy.findById(id))?.data;
+
+    await this.userRepo.update({ id: user.id }, { isActive: true });
+    await this.notifyUpdate(user);
+
+    return { data: user, message: await this.i18n.t('user.UPDATED') };
+  }
+
+  @Transactional()
+  async unActiveUser(email: string): Promise<void> {
+    const user = (await this.proxy.findByEmail(email))?.data;
+    if (!user)
+      throw new BadRequestException(await this.i18n.t('user.NOT_FOUND'));
+
+    const requestsApproved = await this.requestRepo.find({
+      where: {
+        userId: user.id,
+        course: { isActive: true },
+        status: RequestStatus.APPROVED,
+      },
+      relations: ['course'],
+    });
+
+    if (requestsApproved.length === 0)
+      await this.userRepo.update({ id: user.id }, { isActive: false });
+
+    this.notifyUpdate(user);
   }
 
   @Transactional()

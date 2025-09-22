@@ -55,6 +55,30 @@ export class UserProxy {
     limit: number = Limit,
   ): Promise<UsersResponse> {
     const [items, total] = await this.userRepo.findAndCount({
+      where: { role: Role.USER },
+      order: { createdAt: 'DESC' },
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+    if (items.length === 0)
+      throw new NotFoundException(await this.i18n.t('user.NOT_FOUNDS'));
+
+    return {
+      items,
+      pagination: {
+        totalItems: total,
+        currentPage: page,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
+  }
+
+  async findInstructors(
+    page: number = Page,
+    limit: number = Limit,
+  ): Promise<UsersResponse> {
+    const [items, total] = await this.userRepo.findAndCount({
+      where: { role: Role.INSTRUCTOR },
       order: { createdAt: 'DESC' },
       skip: (page - 1) * limit,
       take: limit,

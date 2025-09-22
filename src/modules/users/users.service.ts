@@ -35,4 +35,11 @@ export class UserService {
   ): Promise<UsersResponse> {
     return this.proxy.findUsers(page, limit);
   }
+
+  async findInstructors(
+    page: number = Page,
+    limit: number = Limit,
+  ): Promise<UsersResponse> {
+    return this.proxy.findInstructors(page, limit);
+  }
 }

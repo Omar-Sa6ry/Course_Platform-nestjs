@@ -13,8 +13,8 @@ import { IRequestProxy } from '../interfaces/IRequestProxy.interface';
 import { CoursesResponse } from 'src/modules/courses/dto/courseResponse.dto';
 import { UserEmailResponse } from 'src/modules/users/dto/UserResponse.dto';
 import { UserLoader } from '../dataloaders/User.dataLoder';
-import { RequestCommand } from '../command/request.command';
-import { SendEmailService } from 'src/common/queues/email/sendemail.service';
+import { EmailQueueService } from '../queue/email-queue.service';
+import { User } from 'src/modules/users/entity/user.entity';
 
 @Injectable()
 export class RequestProxy implements IRequestProxy {
@@ -22,7 +22,7 @@ export class RequestProxy implements IRequestProxy {
     private readonly i18n: I18nService,
     private readonly courseLoaderForUser: CourseLoaderForUser,
     private readonly userLoader: UserLoader,
-    private readonly emailService: SendEmailService,
+    private readonly emailQueueService: EmailQueueService,
     @InjectRepository(Request)
     private readonly requestRepository: Repository<Request>,
   ) {}
@@ -69,6 +69,7 @@ export class RequestProxy implements IRequestProxy {
 
   async findSendEmailForUsers(
     title: string,
+    description: string,
     findRequestInput: FindRequestInput,
   ): Promise<UserEmailResponse> {
     const items = await this.requestRepository.find({
@@ -80,20 +81,23 @@ export class RequestProxy implements IRequestProxy {
       const userIds = items.map((req) => req.userId);
       const users = await this.userLoader.batchUsers.loadMany(userIds);
 
-      const emails: string[] = (users as any[]).map((u) => u.email);
+      const validUsers = users.filter(
+        (user) => user && !(user instanceof Error) && user.email,
+      );
 
-      emails.map((em) => {
-        const emailCommand = new RequestCommand(
-          this.emailService,
-          em,
-          this.i18n.t('request.COURSE_IS_ACTIVE', { args: { title } }),
-          this.i18n.t('request.COURSE_IS_ACTIVE', { args: { title } }),
-        );
-        emailCommand.execute();
-      });
+      const emails: string[] = validUsers.map((u: User) => u.email);
+
+      await this.emailQueueService.queueCourseActivationEmails(
+        validUsers,
+        title,
+        description,
+        this.i18n,
+      );
 
       return { items: emails };
     }
+
+    return { items: [] };
   }
 
   async findAll(

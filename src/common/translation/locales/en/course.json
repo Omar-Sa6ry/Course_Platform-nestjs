@@ -7,5 +7,8 @@
   "UPDATED": "Course '{{title}}' updated successfully.",
   "DELETED": "Course with ID {{id}} deleted successfully.",
   "COURSE_IS_ACTIVE":"Course {title} is active.",
-  "ALREADY_ACTIVE":"Course is already active."
+  "ALREADY_ACTIVE":"Course is already active.",
+  "ALREADY_INACTIVE":"Course is already inactive.",
+  "COURSE_IS_INACTIVE":"Course {title} is inactive.",
+  "COURSE_IS_ENDED":"Course {title} is ended."
 }

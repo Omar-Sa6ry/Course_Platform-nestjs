@@ -36,7 +36,11 @@ export class CourseService {
   async activate(id: string): Promise<CourseResponse> {
     return await this.courseFascade.activate(id);
   }
-  
+
+  async deactivate(id: string): Promise<CourseResponse> {
+    return await this.courseFascade.deactivate(id);
+  }
+
   async delete(id: string): Promise<CourseResponse> {
     return await this.courseFascade.remove(id);
   }

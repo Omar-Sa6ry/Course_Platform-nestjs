@@ -13,10 +13,12 @@ import { UpdateCourseStrategy } from './stratgies/updateCourse.stratgy';
 import { UploadModule } from 'src/common/upload/upload.module';
 import { CategoryModule } from '../category/category.module';
 import { RequestModule } from '../request/request.module';
+import { User } from '../users/entity/user.entity';
+import { Request } from '../request/entity/request.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Course]),
+    TypeOrmModule.forFeature([Course, User, Request]),
     RedisModule,
     UploadModule,
     UserModule,

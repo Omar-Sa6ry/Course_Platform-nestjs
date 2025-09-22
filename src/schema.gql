@@ -188,6 +188,7 @@ type Query {
   getUserById(id: UserIdInput!): UserResponse!
   getUserByEmail(email: EmailInput!): UserResponse!
   getUsers(page: Int, limit: Int): UsersResponse!
+  getInstructors(page: Int, limit: Int): UsersResponse!
   deleteUser(id: UserIdInput!): UserResponse!
   getAllCategories(page: Float, limit: Float): CategoriesResponse!
   getAllCategoriesWithoutPagingation: CategoriesResponse!
@@ -284,6 +285,7 @@ type Mutation {
   createCourse(createCourseInput: CreateCourseInput!): CourseResponse!
   updateCourse(updateCourseInput: UpdateCourseInput!): CourseResponse!
   activationCourse(id: CourseIdInput!): CourseResponse!
+  deActivationCourse(id: CourseIdInput!): CourseResponse!
   deleteCourse(id: CourseIdInput!): CourseResponse!
   createRequest(courseIdInput: CourseIdInput!): RequestResponse!
   acceptRequest(requestId: String!): RequestResponse!

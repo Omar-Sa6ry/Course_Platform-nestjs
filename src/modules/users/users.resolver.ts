@@ -40,6 +40,15 @@ export class UserResolver {
     return await this.userService.findUsers(page, limit);
   }
 
+  @Query((returns) => UsersResponse)
+  @Auth([Permission.VIEW_USER])
+  async getInstructors(
+    @Args('page', { type: () => Int, nullable: true }) page?: number,
+    @Args('limit', { type: () => Int, nullable: true }) limit?: number,
+  ): Promise<UsersResponse> {
+    return await this.userService.findInstructors(page, limit);
+  }
+
   @Mutation((returns) => UserResponse)
   @Auth([Permission.UPDATE_USER])
   async updateUser(

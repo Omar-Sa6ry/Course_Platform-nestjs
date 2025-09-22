@@ -16,6 +16,9 @@ import { UpdateCourseInput } from '../inputs/updateCourse.input';
 import { DeleteMediaHandler } from '../chain/deleteMedia.chain';
 import { RequestProxy } from 'src/modules/request/proxy/request.proxy';
 import { RequestStatus } from 'src/common/constant/enum.constant';
+import { UserFacadeService } from 'src/modules/users/fascade/user.fascade';
+import { Request } from 'src/modules/request/entity/request.entity';
+import { User } from 'src/modules/users/entity/user.entity';
 
 @Injectable()
 export class CourseFascade {
@@ -23,12 +26,17 @@ export class CourseFascade {
     private readonly i18n: I18nService,
     private readonly redisService: RedisService,
     private readonly courseProxy: CourseProxy,
+    private readonly userFascade: UserFacadeService,
     private readonly requestProxy: RequestProxy,
     private readonly createStrategy: CreateCourseStrategy,
     private readonly updateStrategy: UpdateCourseStrategy,
     private readonly uploadService: UploadService,
     @InjectRepository(Course)
     private readonly courseRepository: Repository<Course>,
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+    @InjectRepository(Request)
+    private readonly requestRepository: Repository<Request>,
   ) {}
 
   @Transactional()
@@ -100,17 +108,66 @@ export class CourseFascade {
     course!.isActive = true;
     await this.courseRepository.save(course!);
 
-    await this.requestProxy.findSendEmailForUsers(course.title, {
-      courseId: id,
-      status: RequestStatus.PENDING || RequestStatus.APPROVED,
-    });
+    this.userFascade.activeUser(course.instructor.id);
+    this.requestProxy.findSendEmailForUsers(
+      course.title,
+      await this.i18n.t('course.COURSE_IS_ACTIVE', {
+        args: { title: course.title },
+      }),
+      {
+        courseId: id,
+        status: RequestStatus.PENDING || RequestStatus.APPROVED,
+      },
+    );
 
-    const courses = await this.courseRepository.countBy({ isActive: true });
-    this.redisService.set(`course_count:all`, courses);
+    const courses = await this.courseRepository.count({
+      where: { isActive: true },
+    });
+    this.redisService.update(`course_count:all`, courses);
 
     return {
       data: course,
       message: await this.i18n.t('course.COURSE_IS_ACTIVE', {
+        args: { title: course.title },
+      }),
+    };
+  }
+
+  @Transactional()
+  async deactivate(id: string): Promise<CourseResponse> {
+    const course = (await this.courseProxy.findById(id))?.data;
+
+    if (!course?.isActive)
+      throw new BadRequestException(
+        await this.i18n.t('course.ALREADY_INACTIVE', {
+          args: { title: course.title },
+        }),
+      );
+
+    course!.isActive = false;
+    await this.courseRepository.save(course!);
+    this.searchOnInstractorsCourses(course.instructor.id);
+    this.searchOnUsersCourses(id);
+
+    this.requestProxy.findSendEmailForUsers(
+      course.title,
+      await this.i18n.t('course.COURSE_IS_ENDED', {
+        args: { title: course.title },
+      }),
+      {
+        courseId: id,
+        status: RequestStatus.PENDING || RequestStatus.APPROVED,
+      },
+    );
+
+    const courses = await this.courseRepository.count({
+      where: { isActive: true },
+    });
+    this.redisService.update(`course_count:all`, courses);
+
+    return {
+      data: course,
+      message: await this.i18n.t('course.COURSE_IS_INACTIVE', {
         args: { title: course.title },
       }),
     };
@@ -141,5 +198,28 @@ export class CourseFascade {
       data: null,
       message: await this.i18n.t('course.DELETED', { args: { id } }),
     };
+  }
+
+  // private Services
+
+  private async searchOnInstractorsCourses(id: string): Promise<void> {
+    const courses = await this.courseRepository.count({
+      where: { instructor: { id } },
+    });
+
+    if (courses === 1) this.userFascade.unActiveUser(id);
+  }
+
+  private async searchOnUsersCourses(id: string) {
+    const requests = await this.requestRepository.find({
+      where: { courseId: id },
+    });
+    const usersIds = requests.map((request) => request.userId);
+
+    const users = await this.userRepository.findByIds(usersIds);
+
+    users.map((user, index) => {
+      this.userFascade.unActiveUser(user.email);
+    });
   }
 }
