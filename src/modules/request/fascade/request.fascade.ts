@@ -89,17 +89,7 @@ export class RequestFascade implements IRequestFascade {
 
     if (userRequests === 0) await this.userProxy.makeUserActive(request.userId);
 
-    const checkIfInCart = await this.cartItemRepository.findOne({
-      where: { cart: { userId: request.userId }, courseId: request.courseId },
-    });
-    if (checkIfInCart) {
-      this.cartItemRepository.remove(checkIfInCart);
-      const cart = await this.cartRepository.findOne({
-        where: { userId: request.userId },
-      });
-      cart.totalPrice = cart.totalPrice - checkIfInCart.totalPrice;
-      this.cartRepository.save(cart);
-    }
+    this.checkIfInCart(request.userId, request.courseId);
 
     const emailCommand = new RequestCommand(
       this.emailService,
@@ -174,5 +164,20 @@ export class RequestFascade implements IRequestFascade {
       message: this.i18n.t('request.DELETED'),
       data: request,
     };
+  }
+
+  // private method
+  async checkIfInCart(userId: string, courseId: string) {
+    const checkIfInCart = await this.cartItemRepository.findOne({
+      where: { cart: { userId: userId }, courseId: courseId },
+    });
+    if (checkIfInCart) {
+      this.cartItemRepository.remove(checkIfInCart);
+      const cart = await this.cartRepository.findOne({
+        where: { userId: userId },
+      });
+      cart.totalPrice = cart.totalPrice - checkIfInCart.totalPrice;
+      this.cartRepository.save(cart);
+    }
   }
 }
