@@ -9,10 +9,13 @@ import { UserFacadeService } from './fascade/user.fascade';
 import { User } from './entity/user.entity';
 import { UserProxy } from './proxy/user.proxy';
 import { Request } from '../request/entity/request.entity';
+import { CartProxy } from '../cart/proxy/Cart.proxy';
+import { CartItem } from '../cart/entities/cartItem.enitty';
+import { Cart } from '../cart/entities/cart.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Request]),
+    TypeOrmModule.forFeature([User, Request, CartItem, Cart]),
     EmailModule,
     RedisModule,
   ],
@@ -22,6 +25,7 @@ import { Request } from '../request/entity/request.entity';
     UserProxy,
     UserFacadeService,
     UploadService,
+    CartProxy,
   ],
   exports: [UserService, UserFacadeService, UserProxy, TypeOrmModule],
 })

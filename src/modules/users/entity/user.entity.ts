@@ -6,6 +6,7 @@ import { CapitalTextField } from 'src/common/decorator/validation/CapitalField.d
 import { EmailField } from 'src/common/decorator/validation/EmailField.decorator';
 import { NationalIdField } from 'src/common/decorator/validation/nationalId.decorator';
 import { PhoneField } from 'src/common/decorator/validation/PhoneField.decorator';
+import { Cart } from 'src/modules/cart/entities/cart.entity';
 import { Certificate } from 'src/modules/certificate/entity/certificate.entity';
 import { Course } from 'src/modules/courses/entity/course.entity';
 import { Request } from 'src/modules/request/entity/request.entity';
@@ -17,6 +18,7 @@ import {
   BeforeUpdate,
   Check,
   OneToMany,
+  OneToOne,
 } from 'typeorm';
 
 @ObjectType()
@@ -100,6 +102,13 @@ export class User extends BaseEntity {
   @Exclude()
   @Column({ nullable: true })
   fcmToken?: string;
+
+  @Field(() => Cart, { nullable: true })
+  @OneToOne(() => Cart, (cart) => cart.user, {
+    onDelete: 'SET NULL',
+    nullable: true,
+  })
+  cart?: Cart;
 
   @Field(() => [Course], { nullable: true })
   @OneToMany(() => Course, (course) => course.instructor)

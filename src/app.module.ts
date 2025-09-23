@@ -12,6 +12,7 @@ import { CategoryModule } from './modules/category/category.module';
 import { CourseModule } from './modules/courses/course.module';
 import { RequestModule } from './modules/request/request.module';
 import { CertificateModule } from './modules/certificate/certificate.module';
+import { CartModule } from './modules/cart/cart.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { CertificateModule } from './modules/certificate/certificate.module';
     CourseModule,
     RequestModule,
     CertificateModule,
+    CartModule,
   ],
   providers: [AppService, AppResolver],
 })

@@ -15,10 +15,12 @@ import { SendEmailService } from 'src/common/queues/email/sendemail.service';
 import { EmailModule } from 'src/common/queues/email/email.module';
 import { UserLoader } from './dataloaders/User.dataLoder';
 import { EmailQueueService } from './queue/email-queue.service';
+import { CartItem } from '../cart/entities/cartItem.enitty';
+import { Cart } from '../cart/entities/cart.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Request, User, Course]),
+    TypeOrmModule.forFeature([Request, Cart, CartItem, User, Course]),
     UserModule,
     EmailModule,
     forwardRef(() => CourseModule),

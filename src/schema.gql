@@ -2,6 +2,32 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type CartItem {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  totalPrice: Int!
+  cartId: String!
+  courseId: String!
+  course: Course!
+  cart: Cart!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Cart {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  totalPrice: Float!
+  userId: String!
+  cartItems: [CartItem!]
+  items: [CartItem!]!
+}
+
 type Certificate {
   id: ID!
   createdAt: DateTime!
@@ -11,11 +37,6 @@ type Certificate {
   user: User!
   course: Course!
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 type Request {
   id: ID!
@@ -50,6 +71,7 @@ type User {
   email: String!
   avatar: String
   isActive: Boolean
+  cart: Cart
   courses: [Course!]
   requests: [Request!]!
   certificates: [Certificate!]!
@@ -79,6 +101,7 @@ type Course {
   instructor: User!
   category: Category!
   certificates: [Certificate!]!
+  cartItems: [CartItem!]!
   requests: [Request!]!
   finalPrice: Float!
 }
@@ -212,6 +235,31 @@ type CertificatesResponse {
   pagination: PaginationInfo
 }
 
+type CartResponse {
+  message: String
+  success: Boolean
+  timeStamp: String
+  statusCode: Float
+  data: Cart
+}
+
+type CartItemsResponse {
+  message: String
+  success: Boolean
+  timeStamp: String
+  statusCode: Float
+  items: [CartItem!]
+  pagination: PaginationInfo
+}
+
+type TotalCartsResponse {
+  message: String
+  success: Boolean
+  timeStamp: String
+  statusCode: Float
+  data: Float
+}
+
 type Query {
   sayHello: String!
   getUserById(id: UserIdInput!): UserResponse!
@@ -237,6 +285,9 @@ type Query {
   getCertificateById(id: CertificateIdInput!): CertificateResponse!
   getCertificateByIdForUser: CertificatesResponse!
   getCertificates(findCertificateInput: FindCertificateInput, page: Int, limit: Int): CertificatesResponse!
+  getCartTotal: TotalCartsResponse!
+  findCartItems(cartId: CartIdInput!): CartItemsResponse!
+  findCart: CartResponse!
 }
 
 input UserIdInput {
@@ -312,6 +363,10 @@ input FindCertificateInput {
   userId: String
 }
 
+input CartIdInput {
+  cartId: String!
+}
+
 type Mutation {
   register(createUserDto: CreateUserDto!): AuthResponse!
   login(loginDto: LoginDto!): AuthResponse!
@@ -335,6 +390,9 @@ type Mutation {
   deleteRequest(requestId: String!): RequestResponse!
   createCertificate(createCertificateInput: CreateCertificateInput!): CertificateResponse!
   deleteCertificate(id: CertificateIdInput!): CertificateResponse!
+  addToCart(courseIdInput: CourseIdInput!): CartResponse!
+  deleteCart(cartIdInput: CartIdInput!): CartResponse!
+  emptyCart: CartResponse!
 }
 
 input CreateUserDto {

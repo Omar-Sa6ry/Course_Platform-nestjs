@@ -1,5 +1,13 @@
 import { UserService } from 'src/modules/users/users.service';
-import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Int,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { UpdateUserDto } from './inputs/UpdateUser.dto';
 import { Permission } from 'src/common/constant/enum.constant';
 import { CurrentUserDto } from 'src/common/dtos/currentUser.dto';
@@ -9,12 +17,15 @@ import { UserResponse, UsersResponse } from './dto/UserResponse.dto';
 import { EmailInput, UserIdInput } from './inputs/user.input';
 import { UserFacadeService } from './fascade/user.fascade';
 import { User } from './entity/user.entity';
+import { Cart } from '../cart/entities/cart.entity';
+import { CartProxy } from '../cart/proxy/Cart.proxy';
 
 @Resolver(() => User)
 export class UserResolver {
   constructor(
     private readonly userFacade: UserFacadeService,
     private readonly userService: UserService,
+    private readonly cartProxy: CartProxy,
   ) {}
 
   @Query((returns) => UserResponse)
@@ -70,5 +81,11 @@ export class UserResolver {
     @Args('id') id: UserIdInput,
   ): Promise<UserResponse> {
     return await this.userFacade.editUserRole(id.UserId);
+  }
+
+  // Resolver Fields
+  @ResolveField(() => Cart)
+  async cart(@Parent() user: User): Promise<Cart> {
+    return (await this.cartProxy.findCart(user.id))?.data || null;
   }
 }

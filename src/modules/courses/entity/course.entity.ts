@@ -6,6 +6,7 @@ import { Category } from 'src/modules/category/entity/category.entity';
 import { CourseLevel } from 'src/common/constant/enum.constant';
 import { Request } from 'src/modules/request/entity/request.entity';
 import { Certificate } from 'src/modules/certificate/entity/certificate.entity';
+import { CartItem } from 'src/modules/cart/entities/cartItem.enitty';
 
 @ObjectType()
 @Entity('courses')
@@ -97,6 +98,12 @@ export class Course extends BaseEntity {
     onDelete: 'SET NULL',
   })
   certificates: Certificate[];
+
+  @Field(() => [CartItem])
+  @OneToMany(() => CartItem, (cartItem) => cartItem.course, {
+    onDelete: 'SET NULL',
+  })
+  cartItems: CartItem[];
 
   @Field(() => [Request])
   @OneToMany(() => Request, (request) => request.course, {

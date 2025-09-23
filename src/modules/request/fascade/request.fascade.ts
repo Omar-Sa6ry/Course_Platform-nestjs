@@ -15,6 +15,8 @@ import { IRequestFascade } from '../interfaces/IRequestFascade.interface';
 import { SendEmailService } from 'src/common/queues/email/sendemail.service';
 import { RequestCommand } from '../command/request.command';
 import { Course } from 'src/modules/courses/entity/course.entity';
+import { CartItem } from 'src/modules/cart/entities/cartItem.enitty';
+import { Cart } from 'src/modules/cart/entities/cart.entity';
 
 @Injectable()
 export class RequestFascade implements IRequestFascade {
@@ -28,6 +30,10 @@ export class RequestFascade implements IRequestFascade {
     private readonly courseRepository: Repository<Course>,
     @InjectRepository(Request)
     private readonly requestRepository: Repository<Request>,
+    @InjectRepository(Cart)
+    private readonly cartRepository: Repository<Cart>,
+    @InjectRepository(CartItem)
+    private readonly cartItemRepository: Repository<CartItem>,
   ) {}
 
   @Transactional()
@@ -82,6 +88,18 @@ export class RequestFascade implements IRequestFascade {
     ).pagination.totalItems;
 
     if (userRequests === 0) await this.userProxy.makeUserActive(request.userId);
+
+    const checkIfInCart = await this.cartItemRepository.findOne({
+      where: { cart: { userId: request.userId }, courseId: request.courseId },
+    });
+    if (checkIfInCart) {
+      this.cartItemRepository.remove(checkIfInCart);
+      const cart = await this.cartRepository.findOne({
+        where: { userId: request.userId },
+      });
+      cart.totalPrice = cart.totalPrice - checkIfInCart.totalPrice;
+      this.cartRepository.save(cart);
+    }
 
     const emailCommand = new RequestCommand(
       this.emailService,

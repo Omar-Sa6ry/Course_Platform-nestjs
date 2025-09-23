@@ -8,6 +8,8 @@ import { User } from 'src/modules/users/entity/user.entity';
 import { addTransactionalDataSource } from 'typeorm-transactional';
 import { DataSource } from 'typeorm';
 import { Certificate } from 'src/modules/certificate/entity/certificate.entity';
+import { Cart } from 'src/modules/cart/entities/cart.entity';
+import { CartItem } from 'src/modules/cart/entities/cartItem.enitty';
 
 @Module({
   imports: [
@@ -22,7 +24,15 @@ import { Certificate } from 'src/modules/certificate/entity/certificate.entity';
         username: configService.get<string>('DB_USERNAME'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_NAME'),
-        entities: [User, Category, Course, Request, Certificate],
+        entities: [
+          User,
+          Category,
+          Course,
+          Request,
+          Certificate,
+          Cart,
+          CartItem,
+        ],
         logging: ['error', 'warn', 'query'], // Logs queries in development
         synchronize: true,
       }),
