@@ -49,6 +49,11 @@ export enum Permission {
   UPDATE_CART = 'update_cart',
   DELETE_CART = 'delete_cart',
   VIEW_CART = 'view_cart',
+
+  // Reviews
+  CREATE_REVIEW = 'create_review',
+  UPDATE_REVIEW = 'update_review',
+  DELETE_REVIEW = 'delete_review',
 }
 
 export enum CourseLevel {

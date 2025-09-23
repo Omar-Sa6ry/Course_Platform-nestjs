@@ -41,6 +41,11 @@ export const rolePermissionsMap: Record<Role, Permission[]> = {
     Permission.UPDATE_CART,
     Permission.DELETE_CART,
     Permission.VIEW_CART,
+
+    // Review
+    Permission.CREATE_REVIEW,
+    Permission.UPDATE_REVIEW,
+    Permission.DELETE_REVIEW,
   ],
 
   [Role.USER]: [
@@ -64,6 +69,11 @@ export const rolePermissionsMap: Record<Role, Permission[]> = {
     Permission.UPDATE_CART,
     Permission.DELETE_CART,
     Permission.VIEW_CART,
+
+    // Review
+    Permission.CREATE_REVIEW,
+    Permission.UPDATE_REVIEW,
+    Permission.DELETE_REVIEW,
   ],
 
   [Role.INSTRUCTOR]: [
@@ -82,5 +92,10 @@ export const rolePermissionsMap: Record<Role, Permission[]> = {
     Permission.UPDATE_CART,
     Permission.DELETE_CART,
     Permission.VIEW_CART,
+
+    // Review
+    Permission.CREATE_REVIEW,
+    Permission.UPDATE_REVIEW,
+    Permission.DELETE_REVIEW,
   ],
 };

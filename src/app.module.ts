@@ -13,6 +13,7 @@ import { CourseModule } from './modules/courses/course.module';
 import { RequestModule } from './modules/request/request.module';
 import { CertificateModule } from './modules/certificate/certificate.module';
 import { CartModule } from './modules/cart/cart.module';
+import { ReviewModule } from './modules/review/review.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { CartModule } from './modules/cart/cart.module';
     UserModule,
     CategoryModule,
     CourseModule,
+    ReviewModule,
     RequestModule,
     CertificateModule,
     CartModule,

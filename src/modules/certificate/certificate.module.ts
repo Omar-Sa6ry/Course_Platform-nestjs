@@ -32,6 +32,6 @@ import { RequestModule } from '../request/request.module';
     CertificateFascade,
     SendEmailService,
   ],
-  exports: [CertificateService],
+  exports: [TypeOrmModule, CertificateProxy],
 })
 export class CertificateModule {}

@@ -83,4 +83,25 @@ export class CertificateProxy {
       },
     };
   }
+
+  async findbyData(userId: string, courseId: string): Promise<void> {
+    const certificate = await this.certificateRepository.findOne({
+      where: {
+        user: { id: userId },
+        course: { id: courseId },
+      },
+    });
+
+    if (!certificate)
+      throw new NotFoundException(this.i18n.t('review.NOT_BUY_THIS_COURSE'));
+  }
+
+  async checkCertificateExisted(
+    userId: string,
+    courseId: string,
+  ): Promise<void> {
+    await this.certificateRepository.findOne({
+      where: { user: { id: userId }, course: { id: courseId } },
+    });
+  }
 }

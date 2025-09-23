@@ -10,6 +10,7 @@ import { Cart } from 'src/modules/cart/entities/cart.entity';
 import { Certificate } from 'src/modules/certificate/entity/certificate.entity';
 import { Course } from 'src/modules/courses/entity/course.entity';
 import { Request } from 'src/modules/request/entity/request.entity';
+import { Review } from 'src/modules/review/entity/review.entity';
 import {
   Entity,
   Column,
@@ -123,6 +124,12 @@ export class User extends BaseEntity {
     onDelete: 'SET NULL',
   })
   certificates: Certificate[];
+
+  @Field(() => [Review])
+  @OneToMany(() => Review, (review) => review.student, {
+    onDelete: 'SET NULL',
+  })
+  reviews: Review[];
 
   @BeforeInsert()
   @BeforeUpdate()

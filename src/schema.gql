@@ -57,6 +57,19 @@ enum RequestStatus {
   CANCELED
 }
 
+type Review {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  rating: Float!
+  comment: String!
+  studentId: String!
+  courseId: String!
+  isApproved: Boolean!
+  course: Course
+  student: User
+}
+
 type User {
   id: ID!
   createdAt: DateTime!
@@ -75,6 +88,7 @@ type User {
   courses: [Course!]
   requests: [Request!]!
   certificates: [Certificate!]!
+  reviews: [Review!]!
 }
 
 type Course {
@@ -103,6 +117,7 @@ type Course {
   certificates: [Certificate!]!
   cartItems: [CartItem!]!
   requests: [Request!]!
+  reviews: [Review!]!
   finalPrice: Float!
 }
 
@@ -260,6 +275,23 @@ type TotalCartsResponse {
   data: Float
 }
 
+type ReviewResponse {
+  message: String
+  success: Boolean
+  timeStamp: String
+  statusCode: Float
+  data: Review
+}
+
+type ReviewsResponse {
+  message: String
+  success: Boolean
+  timeStamp: String
+  statusCode: Float
+  items: [Review!]
+  pagination: PaginationInfo
+}
+
 type Query {
   sayHello: String!
   getUserById(id: UserIdInput!): UserResponse!
@@ -282,6 +314,8 @@ type Query {
   findAllRequestsWithoutPag(findRequestInput: FindRequestInput): RequestsResponse!
   findCoursesForUser: CoursesResponse!
   findCoursesByUserId(userId: String!): CoursesResponse!
+  findReviewById(id: String!): ReviewResponse!
+  findReviews(findReviewInput: FindReviewInput): ReviewsResponse!
   getCertificateById(id: CertificateIdInput!): CertificateResponse!
   getCertificateByIdForUser: CertificatesResponse!
   getCertificates(findCertificateInput: FindCertificateInput, page: Int, limit: Int): CertificatesResponse!
@@ -354,6 +388,11 @@ input FindRequestInput {
   status: RequestStatus
 }
 
+input FindReviewInput {
+  courseId: String
+  studentId: String
+}
+
 input CertificateIdInput {
   certificateId: String!
 }
@@ -388,6 +427,9 @@ type Mutation {
   rejectRequest(requestId: String!): RequestResponse!
   cancelRequest(requestId: String!): RequestResponse!
   deleteRequest(requestId: String!): RequestResponse!
+  createReview(createReviewInput: CreateReviewInput!): ReviewResponse!
+  updateReview(updateReviewInput: UpdateReviewInput!): ReviewResponse!
+  deleteReview(id: String!): ReviewResponse!
   createCertificate(createCertificateInput: CreateCertificateInput!): CertificateResponse!
   deleteCertificate(id: CertificateIdInput!): CertificateResponse!
   addToCart(courseIdInput: CourseIdInput!): CartResponse!
@@ -477,6 +519,18 @@ input UpdateCourseInput {
   demo_video: CreateVideoDto
   instructorId: String
   categoryId: String
+  id: String!
+}
+
+input CreateReviewInput {
+  courseId: String!
+  comment: String!
+  rating: Float!
+}
+
+input UpdateReviewInput {
+  comment: String
+  rating: Float
   id: String!
 }
 

@@ -10,6 +10,7 @@ import { DataSource } from 'typeorm';
 import { Certificate } from 'src/modules/certificate/entity/certificate.entity';
 import { Cart } from 'src/modules/cart/entities/cart.entity';
 import { CartItem } from 'src/modules/cart/entities/cartItem.enitty';
+import { Review } from 'src/modules/review/entity/review.entity';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { CartItem } from 'src/modules/cart/entities/cartItem.enitty';
           Certificate,
           Cart,
           CartItem,
+          Review,
         ],
         logging: ['error', 'warn', 'query'], // Logs queries in development
         synchronize: true,
