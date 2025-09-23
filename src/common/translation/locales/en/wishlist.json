@@ -1,0 +1,7 @@
+{
+    "CREATED":"Wishlist to course created successfully.",
+    "ALREADY_EXISTS":"You have already sent a wishlist for this course.",
+    "NOT_FOUND":"Wishlist not found.",
+    "DELETED":"Wishlist deleted successfully.",
+    "NO_PENDING":"No pending wishlist found with the provided ID."
+}

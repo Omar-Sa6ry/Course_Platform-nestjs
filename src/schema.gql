@@ -70,6 +70,16 @@ type Review {
   student: User
 }
 
+type Wishlist {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  userId: String!
+  courseId: String!
+  user: User!
+  course: Course!
+}
+
 type User {
   id: ID!
   createdAt: DateTime!
@@ -89,6 +99,7 @@ type User {
   requests: [Request!]!
   certificates: [Certificate!]!
   reviews: [Review!]!
+  wishlist: [Wishlist!]!
 }
 
 type Course {
@@ -118,6 +129,7 @@ type Course {
   cartItems: [CartItem!]!
   requests: [Request!]!
   reviews: [Review!]!
+  wishlist: [Wishlist!]!
   finalPrice: Float!
 }
 
@@ -292,6 +304,23 @@ type ReviewsResponse {
   pagination: PaginationInfo
 }
 
+type WishlistResponse {
+  message: String
+  success: Boolean
+  timeStamp: String
+  statusCode: Float
+  data: Wishlist
+}
+
+type WishlistsResponse {
+  message: String
+  success: Boolean
+  timeStamp: String
+  statusCode: Float
+  items: [Wishlist!]
+  pagination: PaginationInfo
+}
+
 type Query {
   sayHello: String!
   getUserById(id: UserIdInput!): UserResponse!
@@ -322,6 +351,10 @@ type Query {
   getCartTotal: TotalCartsResponse!
   findCartItems(cartId: CartIdInput!): CartItemsResponse!
   findCart: CartResponse!
+  findWishlistById(id: String!): WishlistResponse!
+  findAllWishlists(findWishlistInput: FindWishlistInput, page: Float, limit: Float): WishlistsResponse!
+  findAllWishlistsWithoutPag(findWishlistInput: FindWishlistInput): WishlistsResponse!
+  findCoursesForUserInWishlist: CoursesResponse!
 }
 
 input UserIdInput {
@@ -406,6 +439,11 @@ input CartIdInput {
   cartId: String!
 }
 
+input FindWishlistInput {
+  userId: String
+  courseId: String
+}
+
 type Mutation {
   register(createUserDto: CreateUserDto!): AuthResponse!
   login(loginDto: LoginDto!): AuthResponse!
@@ -435,6 +473,8 @@ type Mutation {
   addToCart(courseIdInput: CourseIdInput!): CartResponse!
   deleteCart(cartIdInput: CartIdInput!): CartResponse!
   emptyCart: CartResponse!
+  createWishlist(courseIdInput: CourseIdInput!): WishlistResponse!
+  deleteWishlist(wishlistId: String!): WishlistResponse!
 }
 
 input CreateUserDto {

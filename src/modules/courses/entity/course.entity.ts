@@ -8,6 +8,7 @@ import { Request } from 'src/modules/request/entity/request.entity';
 import { Certificate } from 'src/modules/certificate/entity/certificate.entity';
 import { CartItem } from 'src/modules/cart/entities/cartItem.enitty';
 import { Review } from 'src/modules/review/entity/review.entity';
+import { Wishlist } from 'src/modules/wishlist/entity/wishlist.entity';
 
 @ObjectType()
 @Entity('courses')
@@ -117,4 +118,10 @@ export class Course extends BaseEntity {
     onDelete: 'SET NULL',
   })
   reviews: Review[];
+
+  @Field(() => [Wishlist])
+  @OneToMany(() => Wishlist, (wishlist) => wishlist.course, {
+    onDelete: 'SET NULL',
+  })
+  wishlist: Wishlist[];
 }

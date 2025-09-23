@@ -11,6 +11,7 @@ import { Certificate } from 'src/modules/certificate/entity/certificate.entity';
 import { Course } from 'src/modules/courses/entity/course.entity';
 import { Request } from 'src/modules/request/entity/request.entity';
 import { Review } from 'src/modules/review/entity/review.entity';
+import { Wishlist } from 'src/modules/wishlist/entity/wishlist.entity';
 import {
   Entity,
   Column,
@@ -130,6 +131,12 @@ export class User extends BaseEntity {
     onDelete: 'SET NULL',
   })
   reviews: Review[];
+
+  @Field(() => [Wishlist])
+  @OneToMany(() => Wishlist, (wishlist) => wishlist.course, {
+    onDelete: 'SET NULL',
+  })
+  wishlist: Wishlist[];
 
   @BeforeInsert()
   @BeforeUpdate()

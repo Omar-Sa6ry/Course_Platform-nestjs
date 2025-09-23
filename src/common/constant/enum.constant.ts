@@ -50,6 +50,11 @@ export enum Permission {
   DELETE_CART = 'delete_cart',
   VIEW_CART = 'view_cart',
 
+  // Wishlist
+  CREATE_WISHLIST = 'create_wishlist',
+  DELETE_WISHLIST = 'delete_wishlist',
+  VIEW_WISHLIST = 'view_wishlist',
+
   // Reviews
   CREATE_REVIEW = 'create_review',
   UPDATE_REVIEW = 'update_review',

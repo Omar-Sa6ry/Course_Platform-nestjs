@@ -11,6 +11,7 @@ import { Certificate } from 'src/modules/certificate/entity/certificate.entity';
 import { Cart } from 'src/modules/cart/entities/cart.entity';
 import { CartItem } from 'src/modules/cart/entities/cartItem.enitty';
 import { Review } from 'src/modules/review/entity/review.entity';
+import { Wishlist } from 'src/modules/wishlist/entity/wishlist.entity';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { Review } from 'src/modules/review/entity/review.entity';
           Certificate,
           Cart,
           CartItem,
+          Wishlist,
           Review,
         ],
         logging: ['error', 'warn', 'query'], // Logs queries in development

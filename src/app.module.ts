@@ -14,6 +14,7 @@ import { RequestModule } from './modules/request/request.module';
 import { CertificateModule } from './modules/certificate/certificate.module';
 import { CartModule } from './modules/cart/cart.module';
 import { ReviewModule } from './modules/review/review.module';
+import { WishlistModule } from './modules/wishlist/wishlist.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { ReviewModule } from './modules/review/review.module';
     RequestModule,
     CertificateModule,
     CartModule,
+    WishlistModule,
   ],
   providers: [AppService, AppResolver],
 })

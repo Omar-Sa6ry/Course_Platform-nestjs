@@ -17,13 +17,15 @@ import { UserLoader } from './dataloaders/User.dataLoder';
 import { EmailQueueService } from './queue/email-queue.service';
 import { CartItem } from '../cart/entities/cartItem.enitty';
 import { Cart } from '../cart/entities/cart.entity';
+import { WishlistProxy } from '../wishlist/proxy/wishlist.proxy';
+import { Wishlist } from '../wishlist/entity/wishlist.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Request, Cart, CartItem, User, Course]),
+    TypeOrmModule.forFeature([Request, Cart, CartItem, Wishlist, User, Course]),
+    forwardRef(() => CourseModule),
     UserModule,
     EmailModule,
-    forwardRef(() => CourseModule),
   ],
   providers: [
     RequestService,
@@ -34,6 +36,7 @@ import { Cart } from '../cart/entities/cart.entity';
     EmailQueueService,
     RequestRelationsLoader,
     UserLoader,
+    WishlistProxy,
     SendEmailService,
   ],
 

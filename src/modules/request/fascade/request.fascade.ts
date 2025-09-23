@@ -17,6 +17,7 @@ import { RequestCommand } from '../command/request.command';
 import { Course } from 'src/modules/courses/entity/course.entity';
 import { CartItem } from 'src/modules/cart/entities/cartItem.enitty';
 import { Cart } from 'src/modules/cart/entities/cart.entity';
+import { WishlistProxy } from 'src/modules/wishlist/proxy/wishlist.proxy';
 
 @Injectable()
 export class RequestFascade implements IRequestFascade {
@@ -26,6 +27,7 @@ export class RequestFascade implements IRequestFascade {
     private readonly userProxy: UserProxy,
     private readonly courseProxy: CourseProxy,
     private readonly requestProxy: RequestProxy,
+    private readonly wishlistProxy: WishlistProxy,
     @InjectRepository(Course)
     private readonly courseRepository: Repository<Course>,
     @InjectRepository(Request)
@@ -77,6 +79,7 @@ export class RequestFascade implements IRequestFascade {
 
     request.status = RequestStatus.APPROVED;
     course.studentCount += 1;
+
     await this.courseRepository.save(course);
     await this.requestRepository.save(request);
 
@@ -90,6 +93,7 @@ export class RequestFascade implements IRequestFascade {
     if (userRequests === 0) await this.userProxy.makeUserActive(request.userId);
 
     this.checkIfInCart(request.userId, request.courseId);
+    this.wishlistProxy.checkIfInWishlist(request.userId, request.courseId);
 
     const emailCommand = new RequestCommand(
       this.emailService,
@@ -167,7 +171,7 @@ export class RequestFascade implements IRequestFascade {
   }
 
   // private method
-  async checkIfInCart(userId: string, courseId: string) {
+  private async checkIfInCart(userId: string, courseId: string) {
     const checkIfInCart = await this.cartItemRepository.findOne({
       where: { cart: { userId: userId }, courseId: courseId },
     });

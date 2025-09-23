@@ -42,6 +42,11 @@ export const rolePermissionsMap: Record<Role, Permission[]> = {
     Permission.DELETE_CART,
     Permission.VIEW_CART,
 
+    // Wishlist
+    Permission.CREATE_WISHLIST,
+    Permission.DELETE_WISHLIST,
+    Permission.VIEW_WISHLIST,
+
     // Review
     Permission.CREATE_REVIEW,
     Permission.UPDATE_REVIEW,
@@ -70,6 +75,11 @@ export const rolePermissionsMap: Record<Role, Permission[]> = {
     Permission.DELETE_CART,
     Permission.VIEW_CART,
 
+    // Wishlist
+    Permission.CREATE_WISHLIST,
+    Permission.DELETE_WISHLIST,
+    Permission.VIEW_WISHLIST,
+
     // Review
     Permission.CREATE_REVIEW,
     Permission.UPDATE_REVIEW,
@@ -92,6 +102,11 @@ export const rolePermissionsMap: Record<Role, Permission[]> = {
     Permission.UPDATE_CART,
     Permission.DELETE_CART,
     Permission.VIEW_CART,
+
+    // Wishlist
+    Permission.CREATE_WISHLIST,
+    Permission.DELETE_WISHLIST,
+    Permission.VIEW_WISHLIST,
 
     // Review
     Permission.CREATE_REVIEW,
