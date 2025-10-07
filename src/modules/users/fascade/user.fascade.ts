@@ -12,7 +12,7 @@ import { UserFactory } from '../factory/user.factory';
 import { CacheObserver } from '../observer/user.observer';
 import { RedisService } from 'src/common/redis/redis.service';
 import { UserRoleContext } from '../state/user.state';
-import { RequestStatus } from 'src/common/constant/enum.constant';
+import { RequestStatus, Role } from 'src/common/constant/enum.constant';
 import { Request } from 'src/modules/request/entity/request.entity';
 
 @Injectable()
@@ -69,7 +69,17 @@ export class UserFacadeService {
     const user = (await this.proxy.findById(id))?.data;
 
     await this.userRepo.update({ id: user.id }, { isActive: true });
-    await this.notifyUpdate(user);
+    this.notifyUpdate(user);
+
+    if (user.role === Role.INSTRUCTOR) {
+      const cachedUser = await this.redisService.get(`active-instructor-count`);
+      if (cachedUser)
+        this.redisService.set(`active-instructor-count`, +cachedUser + 1);
+    } else if (user.role === Role.USER) {
+      const cachedUser = await this.redisService.get(`active-user-count`);
+      if (cachedUser)
+        this.redisService.set(`active-user-count`, +cachedUser + 1);
+    }
 
     return { data: user, message: await this.i18n.t('user.UPDATED') };
   }
@@ -89,8 +99,20 @@ export class UserFacadeService {
       relations: ['course'],
     });
 
-    if (requestsApproved.length === 0)
+    if (requestsApproved.length === 0) {
       await this.userRepo.update({ id: user.id }, { isActive: false });
+      if (user.role === Role.INSTRUCTOR) {
+        const cachedUser = await this.redisService.get(
+          `unactive-instructor-count`,
+        );
+        if (cachedUser)
+          this.redisService.set(`active-instructor-count`, +cachedUser + 1);
+      } else if (user.role === Role.USER) {
+        const cachedUser = await this.redisService.get(`unactive-user-count`);
+        if (cachedUser)
+          this.redisService.set(`unactive-user-count`, +cachedUser + 1);
+      }
+    }
 
     this.notifyUpdate(user);
   }

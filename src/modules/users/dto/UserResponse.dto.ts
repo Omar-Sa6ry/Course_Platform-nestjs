@@ -1,4 +1,4 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { User } from '../entity/user.entity';
 import { Expose } from 'class-transformer';
 import { BaseResponse } from 'src/common/bases/BaseResponse';
@@ -26,4 +26,12 @@ export class UsersResponse extends BaseResponse {
 export class UserEmailResponse extends BaseResponse {
   @Field(() => [String])
   items: string[];
+}
+
+
+@ObjectType()
+export class UserCountResponse extends BaseResponse {
+  @Field(() => Int, { nullable: true })
+  @Expose()
+  data: number;
 }

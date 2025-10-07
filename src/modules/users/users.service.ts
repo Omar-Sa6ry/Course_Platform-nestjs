@@ -3,7 +3,11 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { RedisService } from 'src/common/redis/redis.service';
-import { UserResponse, UsersResponse } from './dto/UserResponse.dto';
+import {
+  UserCountResponse,
+  UserResponse,
+  UsersResponse,
+} from './dto/UserResponse.dto';
 import { IUserObserver } from './interfaces/IUserObserver.interface';
 import { CacheObserver } from './observer/user.observer';
 import { User } from './entity/user.entity';
@@ -34,6 +38,38 @@ export class UserService {
     limit: number = Limit,
   ): Promise<UsersResponse> {
     return this.proxy.findUsers(page, limit);
+  }
+
+  async getInstructorsCout(): Promise<UserCountResponse> {
+    return this.proxy.getInstructorsCout();
+  }
+
+  async getUsersCount(): Promise<UserCountResponse> {
+    return this.proxy.getUsersCount();
+  }
+
+  async coutActiveInstructors(): Promise<UserCountResponse> {
+    return this.proxy.coutActiveInstructors();
+  }
+
+  async unAcutActiveInstructors(): Promise<UserCountResponse> {
+    return this.proxy.unAcutActiveInstructors();
+  }
+
+  async coutActiveUsers(): Promise<UserCountResponse> {
+    return this.proxy.coutActiveUsers();
+  }
+
+  async coutunActiveUsers(): Promise<UserCountResponse> {
+    return this.proxy.coutunActiveUsers();
+  }
+
+  async averageStudentsToInstructor(): Promise<UserCountResponse> {
+    return this.proxy.averageStudentsToInstructor();
+  }
+
+  async createInstructor(userIdInput: string): Promise<UserResponse> {
+    return this.proxy.createInstructor(userIdInput);
   }
 
   async findInstructors(

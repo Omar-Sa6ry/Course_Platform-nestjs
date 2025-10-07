@@ -20,6 +20,7 @@ import {
   InitialResetState,
   PasswordResetContext,
 } from './state/auth.state';
+import { Transactional } from 'typeorm-transactional';
 
 @Injectable()
 export class AuthService {
@@ -35,6 +36,7 @@ export class AuthService {
     this.passwordStrategy = new PasswordServiceAdapter();
   }
 
+  @Transactional()
   async forgotPassword(email: string): Promise<AuthResponse> {
     const user = await this.validateUserForPasswordReset(email);
 
@@ -56,6 +58,7 @@ export class AuthService {
     return { message: await this.i18n.t('user.SEND_MSG'), data: null };
   }
 
+  @Transactional()
   async resetPassword(
     resetPasswordDto: ResetPasswordDto,
   ): Promise<UserResponse> {
@@ -75,6 +78,7 @@ export class AuthService {
     };
   }
 
+  @Transactional()
   async changePassword(
     id: string,
     changePasswordDto: ChangePasswordDto,

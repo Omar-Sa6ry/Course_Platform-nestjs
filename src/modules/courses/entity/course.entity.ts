@@ -12,7 +12,7 @@ import { Wishlist } from 'src/modules/wishlist/entity/wishlist.entity';
 
 @ObjectType()
 @Entity('courses')
-@Index(['title', 'price'])
+@Index(['title', 'id', 'price'])
 export class Course extends BaseEntity {
   @Field(() => String)
   @Column({ length: 100 })

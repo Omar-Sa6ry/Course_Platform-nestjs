@@ -13,6 +13,7 @@ export enum Permission {
   DELETE_USER = 'delete_user',
   EDIT_USER_ROLE = 'edit_user_role',
   VIEW_USER = 'view_user',
+  CREATE_INSTRUCTOR = 'create_instructor',
 
   // Auth
   RESET_PASSWORD = 'RESET_PASSWORD',

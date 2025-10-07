@@ -1,5 +1,9 @@
 import { RedisService } from 'src/common/redis/redis.service';
-import { UserResponse, UsersResponse } from '../dto/UserResponse.dto';
+import {
+  UserCountResponse,
+  UserResponse,
+  UsersResponse,
+} from '../dto/UserResponse.dto';
 import { I18nService } from 'nestjs-i18n';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -147,6 +151,134 @@ export class UserProxy {
       throw new BadRequestException(
         await this.i18n.t('user.NATIONALID_EXISTED'),
       );
+  }
+
+  // counts
+  async getUsersCount(): Promise<UserCountResponse> {
+    const cacheKey = `user-count`;
+    const cachedUser = await this.redisService.get(cacheKey);
+
+    if (cachedUser) return { data: cachedUser };
+
+    const count = {
+      data: await this.userRepo.count({ where: { role: Role.USER } }),
+    };
+
+    this.redisService.set(cacheKey, count.data);
+    return count;
+  }
+
+  async getInstructorsCout(): Promise<UserCountResponse> {
+    const cacheKey = `instructor-count`;
+    const cachedUser = await this.redisService.get(cacheKey);
+
+    if (cachedUser) return { data: cachedUser };
+
+    const count = {
+      data: await this.userRepo.countBy({ role: Role.INSTRUCTOR }),
+    };
+
+    this.redisService.set(cacheKey, count.data);
+    return count;
+  }
+
+  async coutActiveInstructors(): Promise<UserCountResponse> {
+    const cacheKey = `active-instructor-count`;
+    const cachedUser = await this.redisService.get(cacheKey);
+
+    if (cachedUser) return { data: cachedUser };
+
+    const count = {
+      data: await this.userRepo.countBy({
+        role: Role.INSTRUCTOR,
+        isActive: true,
+      }),
+    };
+
+    this.redisService.set(cacheKey, count.data);
+    return count;
+  }
+
+  async coutActiveUsers(): Promise<UserCountResponse> {
+    const cacheKey = `active-user-count`;
+    const cachedUser = await this.redisService.get(cacheKey);
+
+    if (cachedUser) return { data: cachedUser };
+
+    const count = {
+      data: await this.userRepo.countBy({
+        role: Role.USER,
+        isActive: true,
+      }),
+    };
+
+    this.redisService.set(cacheKey, count.data);
+    return count;
+  }
+
+  async coutunActiveUsers(): Promise<UserCountResponse> {
+    const cacheKey = `unactive-user-count`;
+    const cachedUser = await this.redisService.get(cacheKey);
+
+    if (cachedUser) return { data: cachedUser };
+
+    const count = {
+      data: await this.userRepo.countBy({
+        role: Role.USER,
+        isActive: true,
+      }),
+    };
+
+    this.redisService.set(cacheKey, count.data);
+    return count;
+  }
+
+  async unAcutActiveInstructors(): Promise<UserCountResponse> {
+    const cacheKey = `unactive-instructor-count`;
+    const cachedUser = await this.redisService.get(cacheKey);
+
+    if (cachedUser) return { data: cachedUser };
+
+    const count = {
+      data: await this.userRepo.countBy({
+        role: Role.INSTRUCTOR,
+        isActive: false,
+      }),
+    };
+
+    this.redisService.set(cacheKey, count.data);
+    return count;
+  }
+
+  async averageStudentsToInstructor(): Promise<UserCountResponse> {
+    const cacheKey = `averageStudentsToInstructor`;
+    const cachedUser = await this.redisService.get(cacheKey);
+
+    if (cachedUser) return { data: cachedUser };
+
+    const count = {
+      data:
+        +(await this.getUsersCount())?.data /
+        +(await this.getInstructorsCout())?.data,
+    };
+
+    this.redisService.set(cacheKey, count.data);
+    return count;
+  }
+
+  async createInstructor(userId: string): Promise<UserResponse> {
+    const user = (await this.findById(userId))?.data;
+
+    if (user.role !== Role.USER)
+      throw new BadRequestException(await this.i18n.t('user.NOT_USER'));
+
+    await this.userRepo.update({ id: userId }, { role: Role.INSTRUCTOR });
+
+    const cachedUser = await this.redisService.get(`unactive-instructor-count`);
+    if (cachedUser)
+      this.redisService.set(`unactive-instructor-count`, +cachedUser + 1);
+
+    return { data: user };
   }
 
   // For Anthor Serices

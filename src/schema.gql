@@ -186,6 +186,14 @@ type UsersResponse {
   pagination: PaginationInfo
 }
 
+type UserCountResponse {
+  message: String
+  success: Boolean
+  timeStamp: String
+  statusCode: Float
+  data: Int
+}
+
 type CategoryResponse {
   message: String
   success: Boolean
@@ -243,6 +251,14 @@ type RequestsResponse {
   statusCode: Float
   items: [Request!]
   pagination: PaginationInfo
+}
+
+type RequestCountResponse {
+  message: String
+  success: Boolean
+  timeStamp: String
+  statusCode: Float
+  data: Int
 }
 
 type CertificateResponse {
@@ -327,17 +343,28 @@ type Query {
   getUserByEmail(email: EmailInput!): UserResponse!
   getUsers(page: Int, limit: Int): UsersResponse!
   getInstructors(page: Int, limit: Int): UsersResponse!
+  getInstructorsCount: UserCountResponse!
+  averageStudentsToInstructor: UserCountResponse!
+  coutActiveInstructors: UserCountResponse!
+  unAcutActiveInstructors: UserCountResponse!
+  coutActiveUsers: UserCountResponse!
+  coutunActiveUsers: UserCountResponse!
+  getUsersCount: UserCountResponse!
   deleteUser(id: UserIdInput!): UserResponse!
-  getAllCategories(page: Float, limit: Float): CategoriesResponse!
+  createInstractor(id: UserIdInput!): UserResponse!
+  getAllCategories: CategoriesResponse!
   getAllCategoriesWithoutPagingation: CategoriesResponse!
   getCategoryById(id: CategoryIdInput!): CategoryResponse!
   getCategoryByName(name: CategoryNameInput!): CategoryResponse!
   findCourseById(id: CourseIdInput!): CourseResponse!
   findCourseByTitle(title: CourseTitleInput!): CourseResponse!
-  findAllCourses(findCourseInput: FindCourseInput!, page: Float, limit: Float): CoursesResponse!
-  findAllCoursesWithoutPag(findCourseInput: FindCourseInput!): CoursesResponse!
+  findAllCourses(findCourseInput: FindCourseInput, page: Float, limit: Float, orderby: String): CoursesResponse!
+  findAllCoursesWithoutPag(findCourseInput: FindCourseInput): CoursesResponse!
   countCourses: CourseCountResponse!
   countAllCourses: CourseCountResponse!
+  countCoursesActive: CourseCountResponse!
+  getProfits: RequestCountResponse!
+  countPendding: RequestCountResponse!
   findRequestById(id: String!): RequestResponse!
   findAllRequests(findRequestInput: FindRequestInput, page: Float, limit: Float): RequestsResponse!
   findAllRequestsWithoutPag(findRequestInput: FindRequestInput): RequestsResponse!
@@ -398,6 +425,8 @@ input FindCourseInput {
   isActive: Boolean
   instructorId: String
   categoryId: String
+  ratingAvg: Float
+  studentCount: Int
 }
 
 input CreateImagDto {

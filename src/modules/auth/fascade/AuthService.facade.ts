@@ -36,6 +36,7 @@ export class AuthServiceFacade {
     this.proxy = new UserProxy(this.i18n, this.redisService, this.userRepo);
   }
 
+  @Transactional()
   async register(createUserDto: CreateUserDto): Promise<AuthResponse> {
     const user = await this.createUser(createUserDto);
 
@@ -50,6 +51,9 @@ export class AuthServiceFacade {
       user.email,
     );
     emailCommand.execute();
+
+    const cachedUser = await this.redisService.get(`user-count`);
+    if (cachedUser) this.redisService.set(`user-count`, +cachedUser + 1);
 
     return {
       data: {

@@ -8,7 +8,7 @@ import { RequestStatus } from 'src/common/constant/enum.constant';
 @ObjectType()
 @Entity('requests')
 @Unique(['userId', 'courseId', 'status'])
-@Index(['status', 'createdAt'])
+@Index(['status', 'courseId', 'userId', 'id'])
 export class Request extends BaseEntity {
   @Field(() => String)
   @Column({ length: 26 })

@@ -21,7 +21,7 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule);
     app.enableCors();
     app.useGlobalPipes(new ValidationPipe());
-    app.use(graphqlUploadExpress({ maxFileSize: 1000000, maxFiles: 1 }));
+    app.use(graphqlUploadExpress({ maxFileSize: 1000000, maxFiles: 2 }));
     app.useGlobalInterceptors(
       new ClassSerializerInterceptor(app.get(Reflector)),
       new SqlInjectionInterceptor(),

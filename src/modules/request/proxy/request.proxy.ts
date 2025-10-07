@@ -1,9 +1,14 @@
+import { RedisService } from 'src/common/redis/redis.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { I18nService } from 'nestjs-i18n';
 import { Repository } from 'typeorm';
 import { Request } from '../entity/request.entity';
-import { RequestResponse, RequestsResponse } from '../dto/requestResponse.dto';
+import {
+  RequestCountResponse,
+  RequestResponse,
+  RequestsResponse,
+} from '../dto/requestResponse.dto';
 import { Limit, Page } from 'src/common/constant/messages.constant';
 import { RequestExistsHandler } from '../chain/request.chain';
 import { FindRequestInput } from '../inputs/findRequest.input';
@@ -20,6 +25,7 @@ import { User } from 'src/modules/users/entity/user.entity';
 export class RequestProxy implements IRequestProxy {
   constructor(
     private readonly i18n: I18nService,
+    private readonly redisService: RedisService,
     private readonly courseLoaderForUser: CourseLoaderForUser,
     private readonly userLoader: UserLoader,
     private readonly emailQueueService: EmailQueueService,
@@ -136,5 +142,20 @@ export class RequestProxy implements IRequestProxy {
       await this.courseLoaderForUser.batchCoursesForUsers.load(userId);
 
     return { items: courses };
+  }
+
+  async countPendding(): Promise<RequestCountResponse> {
+    const cacheKey = `unactive-user-count`;
+    const cachedRequest = await this.redisService.get(cacheKey);
+
+    if (cachedRequest) return { data: cachedRequest };
+
+    const count = await this.requestRepository.count({
+      where: { status: RequestStatus.PENDING },
+    });
+
+    this.redisService.set(cacheKey, count);
+
+    return { data: count };
   }
 }

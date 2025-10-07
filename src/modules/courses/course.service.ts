@@ -53,12 +53,22 @@ export class CourseService {
     return await this.courseProxy.findByTitle(title);
   }
 
+  async countCoursesActive(): Promise<CourseCountResponse> {
+    return await this.courseProxy.countCoursesActive();
+  }
+
   async findAll(
     findCourseInput: FindCourseInput,
     page: number = Page,
     limit: number = Limit,
+    orderby: string = 'createdAt',
   ): Promise<CoursesResponse> {
-    return await this.courseProxy.findAll(findCourseInput, page, limit);
+    return await this.courseProxy.findAll(
+      findCourseInput,
+      page,
+      limit,
+      orderby,
+    );
   }
 
   async findAllWithoutPag(

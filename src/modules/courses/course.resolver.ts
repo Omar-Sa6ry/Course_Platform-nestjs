@@ -83,16 +83,19 @@ export class CourseResolver {
 
   @Query(() => CoursesResponse)
   async findAllCourses(
-    @Args('findCourseInput') findCourseInput: FindCourseInput,
+    @Args('findCourseInput', { nullable: true })
+    findCourseInput?: FindCourseInput,
     @Args('page', { nullable: true }) page?: number,
     @Args('limit', { nullable: true }) limit?: number,
+    @Args('orderby', { nullable: true }) orderby?: string,
   ): Promise<CoursesResponse> {
-    return this.courseService.findAll(findCourseInput, page, limit);
+    return this.courseService.findAll(findCourseInput, page, limit, orderby);
   }
 
   @Query(() => CoursesResponse)
   async findAllCoursesWithoutPag(
-    @Args('findCourseInput') findCourseInput: FindCourseInput,
+    @Args('findCourseInput', { nullable: true })
+    findCourseInput?: FindCourseInput,
   ): Promise<CoursesResponse> {
     return this.courseService.findAllWithoutPag(findCourseInput);
   }
@@ -105,6 +108,11 @@ export class CourseResolver {
   @Query(() => CourseCountResponse)
   async countAllCourses(): Promise<CourseCountResponse> {
     return await this.courseService.countAllCourses();
+  }
+
+  @Query(() => CourseCountResponse)
+  async countCoursesActive(): Promise<CourseCountResponse> {
+    return await this.courseService.countCoursesActive();
   }
 
   @ResolveField(() => Number)

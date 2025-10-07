@@ -1,6 +1,10 @@
 import { RequestService } from './request.service';
 import { Request } from './entity/request.entity';
-import { RequestResponse, RequestsResponse } from './dto/requestResponse.dto';
+import {
+  RequestCountResponse,
+  RequestResponse,
+  RequestsResponse,
+} from './dto/requestResponse.dto';
 import { CoursesResponse } from '../courses/dto/courseResponse.dto';
 import { CourseIdInput } from '../courses/inputs/courseId.input';
 import { FindRequestInput } from './inputs/findRequest.input';
@@ -34,6 +38,18 @@ export class RequestResolver {
     @CurrentUser() user: CurrentUserDto,
   ): Promise<RequestResponse> {
     return this.requestService.create(courseIdInput, user.id);
+  }
+
+  @Auth([Permission.UPDATE_REQUEST])
+  @Query(() => RequestCountResponse)
+  async getProfits(): Promise<RequestCountResponse> {
+    return this.requestService.profits();
+  }
+
+  @Auth([Permission.VIEW_REQUEST])
+  @Query(() => RequestCountResponse)
+  async countPendding(): Promise<RequestCountResponse> {
+    return this.requestService.countPendding();
   }
 
   @Auth([Permission.UPDATE_REQUEST])

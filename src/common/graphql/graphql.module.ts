@@ -23,8 +23,9 @@ import { HttpExceptionFilter } from '../filter/errorHandling.filter';
       }),
 
       playground: true,
-      uploads: true,
       debug: false,
+      uploads: false,
+      csrfPrevention: false,
 
       // Subscription
       installSubscriptionHandlers: true,

@@ -11,6 +11,7 @@ export const rolePermissionsMap: Record<Role, Permission[]> = {
     Permission.FORGOT_PASSWORD,
     Permission.LOGOUT,
     Permission.VIEW_USER,
+    Permission.CREATE_INSTRUCTOR,
 
     // Category
     Permission.CREATE_CATEGORY,

@@ -26,6 +26,7 @@ import {
 @ObjectType()
 @Entity('users')
 @Check(`("password" IS NOT NULL) OR ("googleId" IS NOT NULL)`)
+@Index(['email', 'id', 'phone'])
 export class User extends BaseEntity {
   @Field(() => String)
   @Column({ length: 100, nullable: true })
@@ -49,13 +50,11 @@ export class User extends BaseEntity {
   @Field(() => String)
   @Column({ unique: true })
   @PhoneField()
-  @Index()
   phone: string;
 
   @Field(() => String)
   @Column({ unique: true })
   @PhoneField()
-  @Index()
   whatsapp: string;
 
   @Field(() => String)
@@ -66,7 +65,6 @@ export class User extends BaseEntity {
   @Field(() => String)
   @Column({ length: 100, unique: true })
   @EmailField()
-  @Index()
   email: string;
 
   @Exclude()

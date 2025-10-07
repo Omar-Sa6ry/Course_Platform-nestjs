@@ -13,7 +13,11 @@ import { Permission } from 'src/common/constant/enum.constant';
 import { CurrentUserDto } from 'src/common/dtos/currentUser.dto';
 import { CurrentUser } from 'src/common/decorator/currentUser.decorator';
 import { Auth } from 'src/common/decorator/auth.decorator';
-import { UserResponse, UsersResponse } from './dto/UserResponse.dto';
+import {
+  UserCountResponse,
+  UserResponse,
+  UsersResponse,
+} from './dto/UserResponse.dto';
 import { EmailInput, UserIdInput } from './inputs/user.input';
 import { UserFacadeService } from './fascade/user.fascade';
 import { User } from './entity/user.entity';
@@ -60,6 +64,48 @@ export class UserResolver {
     return await this.userService.findInstructors(page, limit);
   }
 
+  @Query((returns) => UserCountResponse)
+  @Auth([Permission.VIEW_USER])
+  async getInstructorsCount(): Promise<UserCountResponse> {
+    return await this.userService.getInstructorsCout();
+  }
+
+  @Query((returns) => UserCountResponse)
+  @Auth([Permission.VIEW_USER])
+  async averageStudentsToInstructor(): Promise<UserCountResponse> {
+    return await this.userService.averageStudentsToInstructor();
+  }
+
+  @Query((returns) => UserCountResponse)
+  @Auth([Permission.VIEW_USER])
+  async coutActiveInstructors(): Promise<UserCountResponse> {
+    return await this.userService.coutActiveInstructors();
+  }
+
+  @Query((returns) => UserCountResponse)
+  @Auth([Permission.VIEW_USER])
+  async unAcutActiveInstructors(): Promise<UserCountResponse> {
+    return await this.userService.unAcutActiveInstructors();
+  }
+
+  @Query((returns) => UserCountResponse)
+  @Auth([Permission.VIEW_USER])
+  async coutActiveUsers(): Promise<UserCountResponse> {
+    return await this.userService.coutActiveUsers();
+  }
+
+  @Query((returns) => UserCountResponse)
+  @Auth([Permission.VIEW_USER])
+  async coutunActiveUsers(): Promise<UserCountResponse> {
+    return await this.userService.coutunActiveUsers();
+  }
+
+  @Query((returns) => UserCountResponse)
+  @Auth([Permission.VIEW_USER])
+  async getUsersCount(): Promise<UserCountResponse> {
+    return await this.userService.getUsersCount();
+  }
+
   @Mutation((returns) => UserResponse)
   @Auth([Permission.UPDATE_USER])
   async updateUser(
@@ -73,6 +119,12 @@ export class UserResolver {
   @Auth([Permission.DELETE_USER])
   async deleteUser(@Args('id') id: UserIdInput): Promise<UserResponse> {
     return await this.userFacade.deleteUser(id.UserId);
+  }
+
+  @Query((returns) => UserResponse)
+  @Auth([Permission.CREATE_INSTRUCTOR])
+  async createInstractor(@Args('id') id: UserIdInput): Promise<UserResponse> {
+    return await this.userService.createInstructor(id.UserId);
   }
 
   @Mutation((returns) => UserResponse)

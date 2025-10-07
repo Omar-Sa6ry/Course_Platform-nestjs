@@ -2,7 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { RequestFascade } from './fascade/request.fascade';
 import { RequestProxy } from './proxy/request.proxy';
 import { Limit, Page } from 'src/common/constant/messages.constant';
-import { RequestResponse, RequestsResponse } from './dto/requestResponse.dto';
+import {
+  RequestCountResponse,
+  RequestResponse,
+  RequestsResponse,
+} from './dto/requestResponse.dto';
 import { CoursesResponse } from '../courses/dto/courseResponse.dto';
 import { FindRequestInput } from './inputs/findRequest.input';
 
@@ -27,6 +31,14 @@ export class RequestService {
 
   async cancel(requestId, userId): Promise<RequestResponse> {
     return this.requestFascade.cancel(requestId, userId);
+  }
+
+  async profits(): Promise<RequestCountResponse> {
+    return this.requestFascade.profits();
+  }
+
+  async countPendding(): Promise<RequestCountResponse> {
+    return this.requestProxy.countPendding();
   }
 
   async delete(requestId): Promise<RequestResponse> {

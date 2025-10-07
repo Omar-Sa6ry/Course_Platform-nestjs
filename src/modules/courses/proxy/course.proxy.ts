@@ -6,7 +6,11 @@ import { Like, Repository } from 'typeorm';
 import { I18nService } from 'nestjs-i18n';
 import { Course } from '../entity/course.entity';
 import { Limit, Page } from 'src/common/constant/messages.constant';
-import { CourseResponse, CoursesResponse } from '../dto/courseResponse.dto';
+import {
+  CourseCountResponse,
+  CourseResponse,
+  CoursesResponse,
+} from '../dto/courseResponse.dto';
 import {
   CourseExistsByTitleHandler,
   CourseExistsHandler,
@@ -61,12 +65,13 @@ export class CourseProxy {
     findCourseInput: FindCourseInput,
     page: number = Page,
     limit: number = Limit,
+    orderby: string = 'createdAt',
   ): Promise<CoursesResponse> {
     const qb = this.courseRepository
       .createQueryBuilder('course')
       .leftJoinAndSelect('course.instructor', 'instructor')
       .leftJoinAndSelect('course.category', 'category')
-      .orderBy('course.createdAt', 'DESC')
+      .orderBy(`course.${orderby}`, 'DESC')
       .skip((page - 1) * limit)
       .take(limit);
 
@@ -82,15 +87,15 @@ export class CourseProxy {
       });
     }
 
-  Object.entries(findCourseInput).forEach(([key, value]) => {
-    if (
-      value !== undefined &&
-      value !== null &&
-      !['title', 'subtitle'].includes(key)
-    ) {
-      qb.andWhere(`course.${key} = :${key}`, { [key]: value });
-    }
-  });
+    Object.entries(findCourseInput).forEach(([key, value]) => {
+      if (
+        value !== undefined &&
+        value !== null &&
+        !['title', 'subtitle'].includes(key)
+      ) {
+        qb.andWhere(`course.${key} = :${key}`, { [key]: value });
+      }
+    });
 
     const courses = await qb.getMany();
 
@@ -129,15 +134,15 @@ export class CourseProxy {
       });
     }
 
-     Object.entries(findCourseInput).forEach(([key, value]) => {
-       if (
-         value !== undefined &&
-         value !== null &&
-         !['title', 'subtitle'].includes(key)
-       ) {
-         qb.andWhere(`course.${key} = :${key}`, { [key]: value });
-       }
-     });
+    Object.entries(findCourseInput).forEach(([key, value]) => {
+      if (
+        value !== undefined &&
+        value !== null &&
+        !['title', 'subtitle'].includes(key)
+      ) {
+        qb.andWhere(`course.${key} = :${key}`, { [key]: value });
+      }
+    });
 
     const courses = await qb.getMany();
 
@@ -146,5 +151,10 @@ export class CourseProxy {
     }
 
     return { items: courses };
+  }
+
+  async countCoursesActive(): Promise<CourseCountResponse> {
+    const courses = await this.courseRepository.countBy({ isActive: true });
+    return { data: courses };
   }
 }

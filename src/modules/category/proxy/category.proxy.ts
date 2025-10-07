@@ -39,14 +39,9 @@ export class CategoryProxy {
     return { data: category };
   }
 
-  async findAll(
-    page: number = Page,
-    limit: number = Limit,
-  ): Promise<CategoriesResponse> {
+  async findAll(): Promise<CategoriesResponse> {
     const categories = await this.categoryRepository.find({
       order: { createdAt: 'DESC' },
-      skip: (page - 1) * limit,
-      take: limit,
     });
 
     if (categories.length === 0)

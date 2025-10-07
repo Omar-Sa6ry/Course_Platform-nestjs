@@ -19,12 +19,23 @@ import { CartItem } from '../cart/entities/cartItem.enitty';
 import { Cart } from '../cart/entities/cart.entity';
 import { WishlistProxy } from '../wishlist/proxy/wishlist.proxy';
 import { Wishlist } from '../wishlist/entity/wishlist.entity';
+import { Certificate } from '../certificate/entity/certificate.entity';
+import { RedisModule } from 'src/common/redis/redis.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Request, Cart, CartItem, Wishlist, User, Course]),
+    TypeOrmModule.forFeature([
+      Request,
+      Certificate,
+      Cart,
+      CartItem,
+      Wishlist,
+      User,
+      Course,
+    ]),
     forwardRef(() => CourseModule),
     UserModule,
+    RedisModule,
     EmailModule,
   ],
   providers: [

@@ -36,8 +36,8 @@ export class CategoryService {
     return await this.categoryProxy.findByName(name.name);
   }
 
-  async findAll(page: number = Page, limit: number = Limit) {
-    return await this.categoryProxy.findAll(page, limit);
+  async findAll() {
+    return await this.categoryProxy.findAll();
   }
 
   async findAllWithoutPag() {

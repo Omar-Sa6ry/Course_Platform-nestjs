@@ -1,6 +1,9 @@
 import { UserProxy } from './../../users/proxy/user.proxy';
 import { Repository } from 'typeorm';
-import { RequestResponse } from '../dto/requestResponse.dto';
+import {
+  RequestCountResponse,
+  RequestResponse,
+} from '../dto/requestResponse.dto';
 import { I18nService } from 'nestjs-i18n';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
@@ -18,12 +21,15 @@ import { Course } from 'src/modules/courses/entity/course.entity';
 import { CartItem } from 'src/modules/cart/entities/cartItem.enitty';
 import { Cart } from 'src/modules/cart/entities/cart.entity';
 import { WishlistProxy } from 'src/modules/wishlist/proxy/wishlist.proxy';
+import { Certificate } from 'src/modules/certificate/entity/certificate.entity';
+import { RedisService } from 'src/common/redis/redis.service';
 
 @Injectable()
 export class RequestFascade implements IRequestFascade {
   constructor(
     private readonly i18n: I18nService,
     private readonly emailService: SendEmailService,
+    private readonly redisService: RedisService,
     private readonly userProxy: UserProxy,
     private readonly courseProxy: CourseProxy,
     private readonly requestProxy: RequestProxy,
@@ -36,6 +42,8 @@ export class RequestFascade implements IRequestFascade {
     private readonly cartRepository: Repository<Cart>,
     @InjectRepository(CartItem)
     private readonly cartItemRepository: Repository<CartItem>,
+    @InjectRepository(Certificate)
+    private readonly certificateRepository: Repository<Certificate>,
   ) {}
 
   @Transactional()
@@ -60,6 +68,10 @@ export class RequestFascade implements IRequestFascade {
       courseId: courseIdInput.courseId,
     });
     await this.requestRepository.save(request);
+
+    const cachedRequest = await this.redisService.get(`request-count`);
+    if (cachedRequest)
+      this.redisService.set(`request-count`, +cachedRequest + 1);
 
     return {
       message: this.i18n.t('request.CREATED'),
@@ -168,6 +180,25 @@ export class RequestFascade implements IRequestFascade {
       message: this.i18n.t('request.DELETED'),
       data: request,
     };
+  }
+
+  async profits(): Promise<RequestCountResponse> {
+    const requests = await this.requestRepository.find({
+      where: { status: RequestStatus.APPROVED },
+      relations: ['course'],
+    });
+
+    const certificates = await this.certificateRepository.find({
+      relations: ['course'],
+    });
+
+    const profits: number =
+      +requests
+        .map((request, index) => request.course.price)
+        .reduce((a, b) => a + b, 0) +
+      +certificates.reduce((a, b) => a + b.course.price, 0);
+
+    return { data: profits, message: this.i18n.t('request.PROFITS') };
   }
 
   // private method

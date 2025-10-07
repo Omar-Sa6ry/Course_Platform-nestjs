@@ -24,11 +24,8 @@ export class CategoryResolver {
   }
 
   @Query(() => CategoriesResponse)
-  async getAllCategories(
-    @Args('page', { nullable: true }) page?: number,
-    @Args('limit', { nullable: true }) limit?: number,
-  ): Promise<CategoriesResponse> {
-    return this.categoryService.findAll(page, limit);
+  async getAllCategories(): Promise<CategoriesResponse> {
+    return this.categoryService.findAll();
   }
 
   @Query(() => CategoriesResponse)

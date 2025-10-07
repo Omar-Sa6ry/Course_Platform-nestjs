@@ -17,7 +17,7 @@ export class RedisService implements IRedisInterface {
   // =================== Core Key-Value Operations ===================
 
   // Set a key with value and TTL (in seconds), value is stringified if not string
-  async set(key: string, value: any, ttl: number = 3600): Promise<void> {
+  async set(key: string, value: any, ttl: number = 7200): Promise<void> {
     try {
       const stringified =
         typeof value === 'string' ? value : JSON.stringify(value);
