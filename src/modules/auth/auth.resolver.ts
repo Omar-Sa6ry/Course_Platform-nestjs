@@ -7,11 +7,11 @@ import { LoginDto } from './inputs/Login.dto';
 import { ResetPasswordDto } from './inputs/ResetPassword.dto';
 import { ChangePasswordDto } from './inputs/ChangePassword.dto';
 import { CurrentUser } from 'src/common/decorator/currentUser.decorator';
-import { CurrentUserDto } from 'src/common/dtos/currentUser.dto';
 import { Permission } from 'src/common/constant/enum.constant';
 import { Auth } from 'src/common/decorator/auth.decorator';
 import { UserResponse } from '../users/dto/UserResponse.dto';
 import { AuthServiceFacade } from './fascade/AuthService.facade';
+import { CurrentUserDto } from '@bts-soft/core';
 
 @Resolver(() => User)
 export class AuthResolver {

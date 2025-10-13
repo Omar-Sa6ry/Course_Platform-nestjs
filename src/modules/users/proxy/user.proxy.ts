@@ -1,4 +1,3 @@
-import { RedisService } from 'src/common/redis/redis.service';
 import {
   UserCountResponse,
   UserResponse,
@@ -15,6 +14,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { RedisService } from '@bts-soft/core';
 
 @Injectable()
 export class UserProxy {

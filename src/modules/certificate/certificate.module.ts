@@ -8,12 +8,11 @@ import { CertificateResolver } from './certificate.resolver';
 import { CertificateLoader } from './dataLoader/certificate.dataLoader';
 import { CertificateProxy } from './proxy/certificate.proxy';
 import { CertificateFascade } from './fascade/certificate.fascade';
-import { RedisModule } from 'src/common/redis/redis.module';
 import { UserModule } from '../users/users.module';
-import { EmailModule } from 'src/common/queues/email/email.module';
-import { SendEmailService } from 'src/common/queues/email/sendemail.service';
 import { CourseProxy } from '../courses/proxy/course.proxy';
 import { RequestModule } from '../request/request.module';
+import { RedisModule, SendEmailService } from '@bts-soft/core';
+import { EmailModule } from '@bts-soft/core';
 
 @Module({
   imports: [

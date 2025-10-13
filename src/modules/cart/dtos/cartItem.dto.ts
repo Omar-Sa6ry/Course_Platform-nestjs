@@ -1,9 +1,8 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Expose } from 'class-transformer';
-import { BaseResponse } from 'src/common/bases/BaseResponse';
-import { PaginationInfo } from 'src/common/dtos/pagintion';
 import { IsOptional } from 'class-validator';
 import { CartItem } from '../entities/cartItem.enitty';
+import { BaseResponse, PaginationInfo } from '@bts-soft/core';
 
 @ObjectType()
 export class CartItemResponse extends BaseResponse {

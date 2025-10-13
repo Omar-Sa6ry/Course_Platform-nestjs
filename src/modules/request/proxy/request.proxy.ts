@@ -1,4 +1,3 @@
-import { RedisService } from 'src/common/redis/redis.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { I18nService } from 'nestjs-i18n';
@@ -20,6 +19,7 @@ import { UserEmailResponse } from 'src/modules/users/dto/UserResponse.dto';
 import { UserLoader } from '../dataloaders/User.dataLoder';
 import { EmailQueueService } from '../queue/email-queue.service';
 import { User } from 'src/modules/users/entity/user.entity';
+import { RedisService } from '@bts-soft/core';
 
 @Injectable()
 export class RequestProxy implements IRequestProxy {

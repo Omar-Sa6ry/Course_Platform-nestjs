@@ -1,7 +1,6 @@
-import { Field, Float, InputType, Int } from '@nestjs/graphql';
+import { IdField, TextField } from '@bts-soft/core';
+import { Field, Float, InputType } from '@nestjs/graphql';
 import { IsNumber, Max, Min } from 'class-validator';
-import { IdField } from 'src/common/decorator/validation/IdValidate.decorator';
-import { TextField } from 'src/common/decorator/validation/TextField.decorator';
 
 @InputType()
 export class CreateReviewInput {

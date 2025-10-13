@@ -1,4 +1,4 @@
-import { SendEmailService } from 'src/common/queues/email/sendemail.service';
+import { SendEmailService } from '@bts-soft/core';
 
 export class SendResetPasswordEmailCommand implements IEmailCommand {
   constructor(

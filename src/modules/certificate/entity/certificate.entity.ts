@@ -1,8 +1,8 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { BaseEntity } from 'src/common/bases/BaseEntity';
 import { User } from 'src/modules/users/entity/user.entity';
 import { Course } from 'src/modules/courses/entity/course.entity';
 import { Column, Entity, Index, ManyToOne, Unique, JoinColumn } from 'typeorm';
+import { BaseEntity } from '@bts-soft/core';
 
 @ObjectType()
 @Entity('certificates')

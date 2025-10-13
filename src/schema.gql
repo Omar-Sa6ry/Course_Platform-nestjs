@@ -2,9 +2,26 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+"""Metadata describing pagination details"""
+type PaginationInfo {
+  """Total number of pages"""
+  totalPages: Int!
+
+  """Current page number"""
+  currentPage: Int!
+
+  """Total number of records/items"""
+  totalItems: Int!
+}
+
 type CartItem {
+  """Unique identifier for the entity"""
   id: ID!
+
+  """Record creation date"""
   createdAt: DateTime!
+
+  """Record last update date"""
   updatedAt: DateTime!
   totalPrice: Int!
   cartId: String!
@@ -19,8 +36,13 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type Cart {
+  """Unique identifier for the entity"""
   id: ID!
+
+  """Record creation date"""
   createdAt: DateTime!
+
+  """Record last update date"""
   updatedAt: DateTime!
   totalPrice: Float!
   userId: String!
@@ -29,8 +51,13 @@ type Cart {
 }
 
 type Certificate {
+  """Unique identifier for the entity"""
   id: ID!
+
+  """Record creation date"""
   createdAt: DateTime!
+
+  """Record last update date"""
   updatedAt: DateTime!
   userId: String!
   courseId: String!
@@ -39,8 +66,13 @@ type Certificate {
 }
 
 type Request {
+  """Unique identifier for the entity"""
   id: ID!
+
+  """Record creation date"""
   createdAt: DateTime!
+
+  """Record last update date"""
   updatedAt: DateTime!
   userId: String!
   courseId: String!
@@ -58,8 +90,13 @@ enum RequestStatus {
 }
 
 type Review {
+  """Unique identifier for the entity"""
   id: ID!
+
+  """Record creation date"""
   createdAt: DateTime!
+
+  """Record last update date"""
   updatedAt: DateTime!
   rating: Float!
   comment: String!
@@ -71,8 +108,13 @@ type Review {
 }
 
 type Wishlist {
+  """Unique identifier for the entity"""
   id: ID!
+
+  """Record creation date"""
   createdAt: DateTime!
+
+  """Record last update date"""
   updatedAt: DateTime!
   userId: String!
   courseId: String!
@@ -81,8 +123,13 @@ type Wishlist {
 }
 
 type User {
+  """Unique identifier for the entity"""
   id: ID!
+
+  """Record creation date"""
   createdAt: DateTime!
+
+  """Record last update date"""
   updatedAt: DateTime!
   firstName: String!
   lastName: String!
@@ -103,8 +150,13 @@ type User {
 }
 
 type Course {
+  """Unique identifier for the entity"""
   id: ID!
+
+  """Record creation date"""
   createdAt: DateTime!
+
+  """Record last update date"""
   updatedAt: DateTime!
   title: String!
   subtitle: String!
@@ -142,8 +194,13 @@ enum CourseLevel {
 }
 
 type Category {
+  """Unique identifier for the entity"""
   id: ID!
+
+  """Record creation date"""
   createdAt: DateTime!
+
+  """Record last update date"""
   updatedAt: DateTime!
   name: String!
   description: String!
@@ -161,12 +218,6 @@ type AuthResponse {
   timeStamp: String
   statusCode: Float
   data: AuthOutPut
-}
-
-type PaginationInfo {
-  totalPages: Int!
-  currentPage: Int!
-  totalItems: Int!
 }
 
 type UserResponse {
@@ -420,7 +471,7 @@ input FindCourseInput {
   price: Float
   totalHours: Float
   totalLectures: Float
-  image: CreateImagDto
+  image: CreateImageDto
   demo_video: CreateVideoDto
   isActive: Boolean
   instructorId: String
@@ -429,7 +480,7 @@ input FindCourseInput {
   studentCount: Int
 }
 
-input CreateImagDto {
+input CreateImageDto {
   name: String
   breed: String
   image: Upload
@@ -516,7 +567,7 @@ input CreateUserDto {
   whatsapp: String!
   nationalId: String!
   fcmToken: String!
-  image: CreateImagDto
+  image: CreateImageDto
 }
 
 input LoginDto {
@@ -538,7 +589,7 @@ input ChangePasswordDto {
 input UpdateUserDto {
   firstName: String
   lastName: String
-  avatar: CreateImagDto
+  avatar: CreateImageDto
   phone: String
   whatsapp: String
 }
@@ -565,7 +616,7 @@ input CreateCourseInput {
   price: Float!
   totalHours: Float!
   totalLectures: Float!
-  image: CreateImagDto
+  image: CreateImageDto
   demo_video: CreateVideoDto
   isActive: Boolean
   instructorId: String!
@@ -584,7 +635,7 @@ input UpdateCourseInput {
   price: Float
   totalHours: Float
   totalLectures: Float
-  image: CreateImagDto
+  image: CreateImageDto
   demo_video: CreateVideoDto
   instructorId: String
   categoryId: String

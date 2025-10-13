@@ -15,10 +15,10 @@ import { Review } from './entity/review.entity';
 import { User } from '../users/entity/user.entity';
 import { Course } from '../courses/entity/course.entity';
 import { CurrentUser } from 'src/common/decorator/currentUser.decorator';
-import { CurrentUserDto } from 'src/common/dtos/currentUser.dto';
 import { ReviewLoaders } from './dataLoader/review.dataLoader';
 import { Auth } from 'src/common/decorator/auth.decorator';
 import { Permission } from 'src/common/constant/enum.constant';
+import { CurrentUserDto } from '@bts-soft/core';
 
 @Resolver(() => Review)
 export class ReviewResolver {

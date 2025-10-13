@@ -2,7 +2,6 @@ import { UserProxy } from 'src/modules/users/proxy/user.proxy';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { RedisService } from 'src/common/redis/redis.service';
 import {
   UserCountResponse,
   UserResponse,
@@ -10,8 +9,8 @@ import {
 } from './dto/UserResponse.dto';
 import { IUserObserver } from './interfaces/IUserObserver.interface';
 import { CacheObserver } from './observer/user.observer';
-import { User } from './entity/user.entity';
 import { Limit, Page } from 'src/common/constant/messages.constant';
+import { RedisService } from '@bts-soft/core';
 
 @Injectable()
 export class UserService {
@@ -20,7 +19,6 @@ export class UserService {
   constructor(
     private readonly redisService: RedisService,
     private readonly proxy: UserProxy,
-    @InjectRepository(User) private readonly userRepo: Repository<User>,
   ) {
     this.observers.push(new CacheObserver(this.redisService));
   }

@@ -11,8 +11,6 @@ import { Course } from '../courses/entity/course.entity';
 import { UserModule } from '../users/users.module';
 import { CourseModule } from '../courses/course.module';
 import { CourseLoaderForUser } from './dataloaders/CourseLoaderForUser.dataloader';
-import { SendEmailService } from 'src/common/queues/email/sendemail.service';
-import { EmailModule } from 'src/common/queues/email/email.module';
 import { UserLoader } from './dataloaders/User.dataLoder';
 import { EmailQueueService } from './queue/email-queue.service';
 import { CartItem } from '../cart/entities/cartItem.enitty';
@@ -20,7 +18,8 @@ import { Cart } from '../cart/entities/cart.entity';
 import { WishlistProxy } from '../wishlist/proxy/wishlist.proxy';
 import { Wishlist } from '../wishlist/entity/wishlist.entity';
 import { Certificate } from '../certificate/entity/certificate.entity';
-import { RedisModule } from 'src/common/redis/redis.module';
+import { EmailModule, RedisModule } from '@bts-soft/core'
+import { SendEmailService } from '@bts-soft/core';
 
 @Module({
   imports: [

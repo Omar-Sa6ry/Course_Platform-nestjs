@@ -1,7 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { User } from '../../users/entity/user.entity';
 import { CartItem } from './cartItem.enitty';
-import { BaseEntity } from 'src/common/bases/BaseEntity';
 import {
   Column,
   Entity,
@@ -10,6 +9,7 @@ import {
   OneToMany,
   OneToOne,
 } from 'typeorm';
+import { BaseEntity } from '@bts-soft/core';
 
 @Entity()
 @ObjectType()

@@ -1,5 +1,5 @@
-import { InputType, Field, ID } from '@nestjs/graphql';
-import { IdField } from 'src/common/decorator/validation/IdValidate.decorator';
+import { IdField } from '@bts-soft/core';
+import { InputType } from '@nestjs/graphql';
 
 @InputType()
 export class CartIdInput {

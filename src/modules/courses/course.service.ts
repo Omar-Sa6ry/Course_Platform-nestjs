@@ -1,4 +1,3 @@
-import { RedisService } from 'src/common/redis/redis.service';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Course } from './entity/course.entity';
@@ -14,6 +13,7 @@ import {
   CourseResponse,
   CoursesResponse,
 } from './dto/courseResponse.dto';
+import { RedisService } from '@bts-soft/core';
 
 @Injectable()
 export class CourseService {

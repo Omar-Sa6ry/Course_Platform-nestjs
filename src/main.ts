@@ -6,8 +6,7 @@ import { NestFactory, Reflector } from '@nestjs/core';
 import { I18nValidationException } from 'nestjs-i18n';
 import { AppModule } from './app.module';
 import { initializeTransactionalContext } from 'typeorm-transactional';
-import { GeneralResponseInterceptor } from './common/interceptors/generalResponse.interceptor';
-import { SqlInjectionInterceptor } from './common/interceptors/sqlInjection.interceptor';
+import { setupInterceptors } from '@bts-soft/core';
 import {
   BadRequestException,
   ClassSerializerInterceptor,
@@ -24,11 +23,10 @@ async function bootstrap() {
     app.use(graphqlUploadExpress({ maxFileSize: 1000000, maxFiles: 2 }));
     app.useGlobalInterceptors(
       new ClassSerializerInterceptor(app.get(Reflector)),
-      new SqlInjectionInterceptor(),
-      new GeneralResponseInterceptor(),
       new ClassSerializerInterceptor(app.get(Reflector)),
     );
 
+    setupInterceptors(app)
     app.useGlobalPipes(
       new ValidationPipe({
         transform: true,

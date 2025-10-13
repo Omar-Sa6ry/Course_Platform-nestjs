@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { SendEmailService } from 'src/common/queues/email/sendemail.service';
 import { UserFacadeService } from 'src/modules/users/fascade/user.fascade';
+import { SendEmailService } from '@bts-soft/core';
 
 @Injectable()
 export class EmailQueueService {
@@ -36,7 +36,7 @@ export class EmailQueueService {
         args: { description },
       });
 
-      await this.emailService.queueEmail(user.email, subject, text);
+      await this.emailService.sendEmail(user.email, subject, text);
     } catch (error) {
       console.error(`Failed to queue email for user ${user?.id}:`, error);
     }

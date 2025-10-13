@@ -14,7 +14,6 @@ import { WishlistLoader } from './dataloaders/wishlist.dataLoader';
 import { FindWishlistInput } from './inputs/findWishlist.input';
 import { Auth } from 'src/common/decorator/auth.decorator';
 import { Permission } from 'src/common/constant/enum.constant';
-import { CurrentUserDto } from 'src/common/dtos/currentUser.dto';
 import { CurrentUser } from 'src/common/decorator/currentUser.decorator';
 import { Course } from '../courses/entity/course.entity';
 import { User } from '../users/entity/user.entity';
@@ -22,6 +21,7 @@ import {
   WishlistResponse,
   WishlistsResponse,
 } from './dto/wishlistResponse.dto';
+import { CurrentUserDto } from '@bts-soft/core';
 
 @Resolver(() => Wishlist)
 export class WishlistResolver {

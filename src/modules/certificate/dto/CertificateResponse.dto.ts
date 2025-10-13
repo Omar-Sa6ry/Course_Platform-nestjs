@@ -1,7 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { BaseResponse } from 'src/common/bases/BaseResponse';
-import { PaginationInfo } from 'src/common/dtos/pagintion';
 import { Certificate } from '../entity/certificate.entity';
+import { BaseResponse, PaginationInfo } from '@bts-soft/core';
 
 @ObjectType()
 export class CertificateResponse extends BaseResponse {

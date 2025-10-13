@@ -15,14 +15,13 @@ import { RequestUniqueHandler } from '../chain/request.chain';
 import { RequestProxy } from '../proxy/request.proxy';
 import { Transactional } from 'typeorm-transactional';
 import { IRequestFascade } from '../interfaces/IRequestFascade.interface';
-import { SendEmailService } from 'src/common/queues/email/sendemail.service';
 import { RequestCommand } from '../command/request.command';
 import { Course } from 'src/modules/courses/entity/course.entity';
 import { CartItem } from 'src/modules/cart/entities/cartItem.enitty';
 import { Cart } from 'src/modules/cart/entities/cart.entity';
 import { WishlistProxy } from 'src/modules/wishlist/proxy/wishlist.proxy';
 import { Certificate } from 'src/modules/certificate/entity/certificate.entity';
-import { RedisService } from 'src/common/redis/redis.service';
+import { RedisService, SendEmailService } from '@bts-soft/core';
 
 @Injectable()
 export class RequestFascade implements IRequestFascade {

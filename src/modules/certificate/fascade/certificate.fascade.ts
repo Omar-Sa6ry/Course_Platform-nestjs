@@ -8,13 +8,12 @@ import { Transactional } from 'typeorm-transactional';
 import { Certificate } from '../entity/certificate.entity';
 import { CertificateResponse } from '../dto/certificateResponse.dto';
 import { CertificateProxy } from '../proxy/certificate.proxy';
-import { RedisService } from 'src/common/redis/redis.service';
 import { Request } from 'src/modules/request/entity/request.entity';
 import { RequestStatus } from 'src/common/constant/enum.constant';
 import { SendCertificateEmailCommand } from '../command/certificate.command';
 import { UserProxy } from 'src/modules/users/proxy/user.proxy';
-import { SendEmailService } from 'src/common/queues/email/sendemail.service';
 import { RequestFascade } from 'src/modules/request/fascade/request.fascade';
+import { RedisService, SendEmailService } from '@bts-soft/core';
 
 @Injectable()
 export class CertificateFascade {

@@ -1,4 +1,3 @@
-import { UploadService } from 'src/common/upload/upload.service';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -7,6 +6,7 @@ import { CreateCourseInput } from '../inputs/createCourse.input';
 import { ICourseStrategy } from '../interfaces/ICourseStratgy.interface';
 import { UserProxy } from 'src/modules/users/proxy/user.proxy';
 import { CategoryProxy } from 'src/modules/category/proxy/category.proxy';
+import { UploadService } from '@bts-soft/core';
 
 @Injectable()
 export class CreateCourseStrategy implements ICourseStrategy {

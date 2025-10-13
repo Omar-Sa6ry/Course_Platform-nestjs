@@ -1,12 +1,11 @@
+import { CapitalTextField, TextField } from '@bts-soft/core';
 import { Field, InputType } from '@nestjs/graphql';
-import { CapitalTextField } from 'src/common/decorator/validation/CapitalField.decorator';
-import { TextField } from 'src/common/decorator/validation/TextField.decorator';
 
 @InputType()
 export class CreateCategoryInput {
-  @CapitalTextField('Category name', 100,false)
+  @CapitalTextField('Category name', 0,100,false)
   name: string;
 
-  @TextField('Category Description', 200, false)
+  @TextField('Category Description', 0,200, false)
   description: string;
 }

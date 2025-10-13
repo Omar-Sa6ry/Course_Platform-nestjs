@@ -1,6 +1,6 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { BaseEntity } from 'src/common/bases/BaseEntity';
+import { BaseEntity } from '@bts-soft/core';
 import { Course } from 'src/modules/courses/entity/course.entity';
 import { Cart } from './cart.entity';
 

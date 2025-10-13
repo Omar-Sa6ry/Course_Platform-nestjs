@@ -8,13 +8,12 @@ import { CourseProxy } from './proxy/course.proxy';
 import { CourseFascade } from './fascade/course.fascade';
 import { CourseResolver } from './course.resolver';
 import { CreateCourseStrategy } from './stratgies/createCourse.stratgy';
-import { RedisModule } from 'src/common/redis/redis.module';
 import { UpdateCourseStrategy } from './stratgies/updateCourse.stratgy';
-import { UploadModule } from 'src/common/upload/upload.module';
 import { CategoryModule } from '../category/category.module';
 import { RequestModule } from '../request/request.module';
 import { User } from '../users/entity/user.entity';
 import { Request } from '../request/entity/request.entity';
+import { RedisModule, UploadModule } from '@bts-soft/core';
 
 @Module({
   imports: [

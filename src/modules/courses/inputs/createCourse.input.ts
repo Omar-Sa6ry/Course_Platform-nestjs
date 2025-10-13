@@ -1,30 +1,32 @@
+import {
+  CapitalTextField,
+  CreateImageDto,
+  CreateVideoDto,
+  IdField,
+  TextField,
+} from '@bts-soft/core';
 import { InputType, Field, Float } from '@nestjs/graphql';
 import { IsEnum, IsNumber, IsOptional } from 'class-validator';
 import { CourseLevel } from 'src/common/constant/enum.constant';
-import { CapitalTextField } from 'src/common/decorator/validation/CapitalField.decorator';
-import { IdField } from 'src/common/decorator/validation/IdValidate.decorator';
-import { TextField } from 'src/common/decorator/validation/TextField.decorator';
-import { CreateImagDto } from 'src/common/upload/dtos/createImage.dto';
-import { CreateVideoDto } from 'src/common/upload/dtos/createVideo.dto';
 
 @InputType()
 export class CreateCourseInput {
-  @CapitalTextField('Title', 100)
+  @CapitalTextField('Title', 1, 100)
   title: string;
 
-  @CapitalTextField('subtitle', 100)
+  @CapitalTextField('subtitle', 1, 100)
   subtitle: string;
 
-  @TextField('description', 255)
+  @TextField('description', 1, 255)
   description: string;
 
-  @TextField('targetAudience', 255)
+  @TextField('targetAudience', 1, 255)
   targetAudience: string;
 
-  @TextField('requirements', 255)
+  @TextField('requirements', 1, 255)
   requirements: string;
 
-  @TextField('learningOutcomes', 255)
+  @TextField('learningOutcomes', 1, 255)
   learningOutcomes: string;
 
   @Field(() => CourseLevel)
@@ -49,8 +51,8 @@ export class CreateCourseInput {
   totalLectures: number;
 
   @IsOptional()
-  @Field(() => CreateImagDto, { nullable: true })
-  image: CreateImagDto;
+  @Field(() => CreateImageDto, { nullable: true })
+  image: CreateImageDto;
 
   @IsOptional()
   @Field(() => CreateVideoDto, { nullable: true })

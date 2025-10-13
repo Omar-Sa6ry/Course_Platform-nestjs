@@ -10,7 +10,6 @@ import {
 } from '@nestjs/graphql';
 import { UpdateUserDto } from './inputs/UpdateUser.dto';
 import { Permission } from 'src/common/constant/enum.constant';
-import { CurrentUserDto } from 'src/common/dtos/currentUser.dto';
 import { CurrentUser } from 'src/common/decorator/currentUser.decorator';
 import { Auth } from 'src/common/decorator/auth.decorator';
 import {
@@ -23,6 +22,7 @@ import { UserFacadeService } from './fascade/user.fascade';
 import { User } from './entity/user.entity';
 import { Cart } from '../cart/entities/cart.entity';
 import { CartProxy } from '../cart/proxy/Cart.proxy';
+import { CurrentUserDto } from '@bts-soft/core';
 
 @Resolver(() => User)
 export class UserResolver {

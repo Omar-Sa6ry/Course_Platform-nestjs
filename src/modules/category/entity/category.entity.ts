@@ -1,7 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { BaseEntity } from 'src/common/bases/BaseEntity';
-import { CapitalTextField } from 'src/common/decorator/validation/CapitalField.decorator';
-import { TextField } from 'src/common/decorator/validation/TextField.decorator';
+import { BaseEntity, CapitalTextField, TextField } from '@bts-soft/core';
 import { Course } from 'src/modules/courses/entity/course.entity';
 import { Column, Entity, Index, OneToMany } from 'typeorm';
 
@@ -10,7 +8,7 @@ import { Column, Entity, Index, OneToMany } from 'typeorm';
 export class Category extends BaseEntity {
   @Field(() => String)
   @Column({ type: 'varchar', length: 100 })
-  @CapitalTextField('Category name', 100, false)
+  @CapitalTextField('Category name',0 ,100, false)
   @Index()
   name: string;
 

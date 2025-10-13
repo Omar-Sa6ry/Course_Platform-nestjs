@@ -1,6 +1,6 @@
 import { InputType, PartialType, OmitType } from '@nestjs/graphql';
 import { CreateReviewInput } from './createReview.input';
-import { IdField } from 'src/common/decorator/validation/IdValidate.decorator';
+import { IdField } from '@bts-soft/core';
 
 @InputType()
 export class UpdateReviewInput extends PartialType(

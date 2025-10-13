@@ -2,8 +2,7 @@ import { Entity, Column, ManyToOne, Unique, Check } from 'typeorm';
 import { Course } from 'src/modules/courses/entity/course.entity';
 import { User } from 'src/modules/users/entity/user.entity';
 import { Field, Float, ObjectType } from '@nestjs/graphql';
-import { TextField } from 'src/common/decorator/validation/TextField.decorator';
-import { BaseEntity } from 'src/common/bases/BaseEntity';
+import { BaseEntity, TextField } from '@bts-soft/core';
 
 @ObjectType()
 @Entity('reviews')

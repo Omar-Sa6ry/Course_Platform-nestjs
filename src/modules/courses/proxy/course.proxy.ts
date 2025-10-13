@@ -1,5 +1,4 @@
 import { FindCourseInput } from './../inputs/findCourse.input';
-import { RedisService } from 'src/common/redis/redis.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Like, Repository } from 'typeorm';
@@ -15,6 +14,7 @@ import {
   CourseExistsByTitleHandler,
   CourseExistsHandler,
 } from '../chain/course.chain';
+import { RedisService } from '@bts-soft/core';
 
 @Injectable()
 export class CourseProxy {

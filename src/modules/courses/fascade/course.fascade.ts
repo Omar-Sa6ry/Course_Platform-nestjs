@@ -1,5 +1,3 @@
-import { RedisService } from './../../../common/redis/redis.service';
-import { UploadService } from 'src/common/upload/upload.service';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -19,6 +17,7 @@ import { RequestStatus } from 'src/common/constant/enum.constant';
 import { UserFacadeService } from 'src/modules/users/fascade/user.fascade';
 import { Request } from 'src/modules/request/entity/request.entity';
 import { User } from 'src/modules/users/entity/user.entity';
+import { RedisService, UploadService } from '@bts-soft/core';
 
 @Injectable()
 export class CourseFascade {

@@ -13,11 +13,11 @@ import { TotalCartsResponse } from './dtos/totalCarts.dto';
 import { Permission } from '../../common/constant/enum.constant';
 import { Auth } from 'src/common/decorator/auth.decorator';
 import { CurrentUser } from 'src/common/decorator/currentUser.decorator';
-import { CurrentUserDto } from 'src/common/dtos/currentUser.dto';
 import { Cart } from './entities/cart.entity';
 import { CartItem } from './entities/cartItem.enitty';
 import { CourseIdInput } from '../courses/inputs/courseId.input';
 import { CartIdInput } from './inputs/cartId.input';
+import { CurrentUserDto } from '@bts-soft/core';
 
 @Resolver(() => Cart)
 export class CartResolver {

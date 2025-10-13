@@ -1,5 +1,5 @@
+import { CapitalTextField } from '@bts-soft/core';
 import { InputType, Field } from '@nestjs/graphql';
-import { CapitalTextField } from 'src/common/decorator/validation/CapitalField.decorator';
 
 @InputType()
 export class CourseTitleInput {

@@ -1,11 +1,11 @@
+import { IdField } from '@bts-soft/core';
 import { InputType } from '@nestjs/graphql';
-import { IdField } from 'src/common/decorator/validation/IdValidate.decorator';
 
 @InputType()
 export class FindWishlistInput {
-  @IdField('User', true)
+  @IdField('User', 26, true)
   userId?: string;
 
-  @IdField('Course', true)
+  @IdField('Course', 26, true)
   courseId?: string;
 }

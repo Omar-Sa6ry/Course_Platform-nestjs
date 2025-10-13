@@ -14,7 +14,6 @@ import { Permission } from 'src/common/constant/enum.constant';
 import { Auth } from 'src/common/decorator/auth.decorator';
 import { CurrentUser } from 'src/common/decorator/currentUser.decorator';
 import { CertificateIdInput } from './inputs/certificateId.input';
-import { CurrentUserDto } from 'src/common/dtos/currentUser.dto';
 import { User } from '../users/entity/user.entity';
 import { Certificate } from './entity/certificate.entity';
 import { Course } from '../courses/entity/course.entity';
@@ -23,6 +22,7 @@ import {
   CertificateResponse,
   CertificatesResponse,
 } from './dto/certificateResponse.dto';
+import { CurrentUserDto } from '@bts-soft/core';
 
 @Resolver(() => Certificate)
 export class CertificateResolver {

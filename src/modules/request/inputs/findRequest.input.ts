@@ -1,14 +1,14 @@
+import { IdField } from '@bts-soft/core';
 import { Field, InputType } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
 import { RequestStatus } from 'src/common/constant/enum.constant';
-import { IdField } from 'src/common/decorator/validation/IdValidate.decorator';
 
 @InputType()
 export class FindRequestInput {
-  @IdField('User', true)
+  @IdField('User', 26, true)
   userId?: string;
 
-  @IdField('Course', true)
+  @IdField('Course', 26, true)
   courseId?: string;
 
   @IsOptional()

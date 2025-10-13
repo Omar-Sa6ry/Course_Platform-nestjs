@@ -10,7 +10,6 @@ import { CourseIdInput } from '../courses/inputs/courseId.input';
 import { FindRequestInput } from './inputs/findRequest.input';
 import { Auth } from 'src/common/decorator/auth.decorator';
 import { Permission } from 'src/common/constant/enum.constant';
-import { CurrentUserDto } from 'src/common/dtos/currentUser.dto';
 import { CurrentUser } from 'src/common/decorator/currentUser.decorator';
 import { Course } from '../courses/entity/course.entity';
 import { User } from '../users/entity/user.entity';
@@ -23,6 +22,7 @@ import {
   Parent,
   ResolveField,
 } from '@nestjs/graphql';
+import { CurrentUserDto } from '@bts-soft/core';
 
 @Resolver(() => Request)
 export class RequestResolver {
